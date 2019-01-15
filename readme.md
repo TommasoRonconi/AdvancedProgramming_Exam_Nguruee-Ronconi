@@ -1,2 +1,2 @@
-# Advanced Programming Exam -- Herbert Nguruee, Tommaso Ronconi
+# Advanced Programming Exam -- Herbert Nguruwe, Tommaso Ronconi
 
