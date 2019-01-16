@@ -196,34 +196,34 @@ template < class T, class U >
   Node* current;
 
  public:
-/*   Iterator(Node* n) : current{n} {} */
-/*   T& operator*() const { return current->val; } */
-/*   Iterator& operator++() { */
-/*     current = current->next.get(); */
-/*     return *this; */
-/*   } */
-/*   // Iterator operator++(int){ */
-/*   //   Iterator it{*this}; */
-/*   //   ++(*this); */
-/*   //   return it; */
-/*   // } */
-/*   bool operator==(const Iterator& other) { return current == other.current; } */
-/*   bool operator!=(const Iterator& other) { return !(*this == other); } */
-/* }; */
+  Iterator(Node* n) : current{n} {}
+  T& operator*() const { return current->val; }
+  Iterator& operator++() {
+    current = current->next.get();
+    return *this;
+  }
+  // Iterator operator++(int){
+  //   Iterator it{*this};
+  //   ++(*this);
+  //   return it;
+  // }
+  bool operator==(const Iterator& other) { return current == other.current; }
+  bool operator!=(const Iterator& other) { return !(*this == other); }
+};
 
 
 /* // =========================================================================== */
 
 
-/* template < class T, class U > */
-/*   class Tree<T, U>::ConstIterator : public Tree<T, U>::Iterator { */
-/*  public: */
-/*     using parent = Tree<T, U>::Iterator; */
-/*   using parent::Iterator; */
-/*   const T& operator*() const { return parent::operator*(); } */
-/*   // using parent::operator==; */
-/*   // using parent::operator!=; */
-/* }; */
+template < class T, class U >
+  class Tree<T, U>::ConstIterator : public Tree<T, U>::Iterator {
+ public:
+    using parent = Tree<T, U>::Iterator;
+  using parent::Iterator;
+  const T& operator*() const { return parent::operator*(); }
+  // using parent::operator==;
+  // using parent::operator!=;
+};
 
 
 
