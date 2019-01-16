@@ -49,10 +49,10 @@ template < class T, class U >
   struct Node : public std::pair< T, U > {
     //T key;
     //U val;
-    std::unique_ptr<Node> parent;
-    std::unique_ptr<Node> left;
-    std::unique_ptr<Node> right;
-    // Node () : std::pair< T, U >{}, parent{nullptr}, left{nullptr}, right{nullptr} {};
+    std::unique_ptr<Node> parent = nullptr;
+    std::unique_ptr<Node> left = nullptr;
+    std::unique_ptr<Node> right = nullptr;
+    Node ( T key, U value, std::unique_ptr<Node> par ) : std::pair< T, U >{ key, value }, parent{par} {};
     /* Node(const T& v, Node* n) : val{v}, next{n} {} */
     ~Node() = default;
   };
@@ -66,13 +66,13 @@ template < class T, class U >
   ///@{
 
   /// The root node of the BST
-  std::unique_ptr<Node> root;
+  std::unique_ptr<Node> root = nullptr;
 
   /// The head of the BST
-  std::unique_ptr<Node> head;
+  std::unique_ptr<Node> head = nullptr;
 
   /// The tail of the BST
-  std::unique_ptr<Node> tail;
+  std::unique_ptr<Node> tail = nullptr;
 
   ///@}
 
