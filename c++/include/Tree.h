@@ -14,6 +14,7 @@
 #ifdef __TREE__
 #define __TREE__
 #include <iostream>
+#include <utility>
 
 /**
  *  @class Tree Tree.h "include/Tree.h"
@@ -42,9 +43,9 @@ template < class T, class U >
    *  <EM> key </EM> and <EM> value </EM> of the tree, respectively.
    *  The templated scheme is deduced from the owner class Tree.
    */
-  struct Node {
-    T key;
-    U val;
+  struct Node : public std::pair< T, U > {
+    //T key;
+    //U val;
     std::unique_ptr<Node> parent;
     std::unique_ptr<Node> left;
     std::unique_ptr<Node> right;
@@ -98,8 +99,34 @@ template < class T, class U >
   ///@{
   
   Tree() = default;
+
+  /////////////////////////
+  /// Copy semantics:
+
+  Tree( const Tree & t );
+
+  Tree& operator= (const Tree& t);
+  /// end of copy semantics
+  /////////////////////////
+
+  /////////////////////////
+  // move semantics
+
+  // move ctor
+  Tree(Tree&& v) noexcept = default/*: _size{std::move(v._size)}, elem{std::move(v.elem)} */;
+
+  // move assignment
+  Tree& operator=(Tree&& v) noexcept = default;/*  { */
+  /*   std::cout << "move assignment\n"; */
+  /*   _size = std::move(v._size); */
+  /*   elem = std::move(v.elem); */
+  /*   return *this; */
+  /* } */
+
+  // end move semantics
+  /////////////////////////
   
-  ~Tree() = default;
+  ~Tree() noexcept = default;
 
   ///@}
 
