@@ -56,6 +56,13 @@ template < class T, class U >
       : std::pair< T, U >{ key, value }, parent{par} {}
     /* Node(const T& v, Node* n) : val{v}, next{n} {} */
     ~Node() = default;
+
+    // std::unique_ptr<Node> get_direction ( direction dir ) {
+    //   if ( dir == direction::left )
+    // 	return left;
+    //   else
+    // 	return right;
+    // }
   };
 
   ///@}
