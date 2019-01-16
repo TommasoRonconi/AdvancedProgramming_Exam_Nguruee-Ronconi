@@ -52,7 +52,8 @@ template < class T, class U >
     std::unique_ptr<Node> parent = nullptr;
     std::unique_ptr<Node> left = nullptr;
     std::unique_ptr<Node> right = nullptr;
-    Node ( T key, U value, std::unique_ptr<Node> par ) : std::pair< T, U >{ key, value }, parent{par} {};
+    Node ( T key, U value, std::unique_ptr<Node> par )
+      : std::pair< T, U >{ key, value }, parent{par} {}
     /* Node(const T& v, Node* n) : val{v}, next{n} {} */
     ~Node() = default;
   };
