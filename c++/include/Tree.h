@@ -11,10 +11,13 @@
  */
 
 
-#ifdef __TREE__
+#ifndef __TREE__
 #define __TREE__
 #include <iostream>
 #include <utility>
+#include <memory>
+
+
 
 /**
  *  @class Tree Tree.h "include/Tree.h"
@@ -49,8 +52,9 @@ template < class T, class U >
     std::unique_ptr<Node> parent;
     std::unique_ptr<Node> left;
     std::unique_ptr<Node> right;
+    // Node () : std::pair< T, U >{}, parent{nullptr}, left{nullptr}, right{nullptr} {};
     /* Node(const T& v, Node* n) : val{v}, next{n} {} */
-    /* ~Node() = default; */
+    ~Node() = default;
   };
 
   ///@}
@@ -81,15 +85,15 @@ template < class T, class U >
 
   /// operator<< overload
   template < class ot, class ou >
-    friend std::ostream& operator<<(std::ostream&, const Tree< ot, ou >&);
+    friend std::ostream& operator<< ( std::ostream&, const Tree< ot, ou >& );
 
   /// operator[] overload, constant version
   template < class ot, class ou >
-    friend ou& operator[] ( const ot& key ) const;
+    ou& operator[] ( const ot& key ) const;
 
   /// operator[] overload, non-constant version
   template < class ot, class ou >
-    friend ou& operator[] ( const ot& key );
+    ou& operator[] ( const ot& key );
 
   ///@}
 
@@ -152,7 +156,7 @@ template < class T, class U >
    */
   ///@{
 
-  void insert ( Node * new, const bool substitute );
+  void insert ( Node * newnode, const bool substitute );
 
   void clear ();
 
@@ -192,34 +196,36 @@ template < class T, class U >
   Node* current;
 
  public:
-  Iterator(Node* n) : current{n} {}
-  T& operator*() const { return current->val; }
-  Iterator& operator++() {
-    current = current->next.get();
-    return *this;
-  }
-  // Iterator operator++(int){
-  //   Iterator it{*this};
-  //   ++(*this);
-  //   return it;
-  // }
-  bool operator==(const Iterator& other) { return current == other.current; }
-  bool operator!=(const Iterator& other) { return !(*this == other); }
-};
+/*   Iterator(Node* n) : current{n} {} */
+/*   T& operator*() const { return current->val; } */
+/*   Iterator& operator++() { */
+/*     current = current->next.get(); */
+/*     return *this; */
+/*   } */
+/*   // Iterator operator++(int){ */
+/*   //   Iterator it{*this}; */
+/*   //   ++(*this); */
+/*   //   return it; */
+/*   // } */
+/*   bool operator==(const Iterator& other) { return current == other.current; } */
+/*   bool operator!=(const Iterator& other) { return !(*this == other); } */
+/* }; */
 
 
-// ===========================================================================
+/* // =========================================================================== */
 
 
-template < class T, class U >
-  class Tree<T, U>::ConstIterator : public Tree<T, U>::Iterator {
- public:
-    using parent = Tree<T, U>::Iterator;
-  using parent::Iterator;
-  const T& operator*() const { return parent::operator*(); }
-  // using parent::operator==;
-  // using parent::operator!=;
-};
+/* template < class T, class U > */
+/*   class Tree<T, U>::ConstIterator : public Tree<T, U>::Iterator { */
+/*  public: */
+/*     using parent = Tree<T, U>::Iterator; */
+/*   using parent::Iterator; */
+/*   const T& operator*() const { return parent::operator*(); } */
+/*   // using parent::operator==; */
+/*   // using parent::operator!=; */
+/* }; */
+
+
 
 
 #endif
