@@ -1,7 +1,4 @@
-#include<Tree.h>
-
-
-
+#include"include/Tree.h"
 
 int main(int argc, char const *argv[])
 {
