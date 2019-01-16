@@ -164,6 +164,14 @@ template < class T, class U >
   
 };
 
+template < class T, class U >
+  std::ostream& operator<< (std::ostream& os, const Tree< T,U >& t) {
+  
+  /* for (const auto& x : l) */
+  /*   os << x << " "; */
+  
+  return os;
+}
 
 /* template <typename T> */
 /* void Tree<T>::push_back(const T& t) { */

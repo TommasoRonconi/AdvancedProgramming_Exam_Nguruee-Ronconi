@@ -1,17 +1,7 @@
 #include <Tree.h>
-
+#include <iostream>
 
 // ===========================================================================
-
-
-template <class T, class U>
-std::ostream& operator<<(std::ostream& os, const Tree< T,U >& t) {
-
-  /* for (const auto& x : l) */
-  /*   os << x << " "; */
-
-  return os;
-}
 
 
 // ===========================================================================

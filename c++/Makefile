@@ -1,10 +1,16 @@
 EXE = exe.x
 CXX = c++
-CXXFLAGS = -I include -g -std=c++11 -Wall -Wextra
 
-SRC= main.cc # src/dog.cc src/animal.cc src/snake.cc src/helper_functions.cc
+dirL = $(PWD)/src
+dirI = $(PWD)/include
+
+CXXFLAGS = -I$(dirI) -g -std=c++11 -Wall -Wextra
+
+SRC= main.cc $(dirL)/Tree.cc 
 OBJ=$(SRC:.cc=.o)
-INC = # include/animal.h  include/dog.h  include/helper_functions.h  include/snake.h
+INC = $(dirI)/Tree.h
+
+LDFLAGS = -Wl,-rpath,$(dirL)
 
 # VPATH = ../05_error_handling
 
@@ -21,29 +27,24 @@ all: $(EXE)
 
 clean:
 	$(info clean up)
-	@rm -rf $(OBJ) $(EXE) src/*~ include/*~ *~ html latex
+	@rm -rf $(OBJ) $(EXE) $(dirL)/*~ $(dirI)/*~ *~ html latex
 
 .PHONY: clean
 
-%.o: %.cc ap_error.h
+%.o: %.cc
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 $(EXE): $(OBJ)
-	$(CXX) $^ -o $(EXE)
+	$(CXX) $^ -o $(EXE) $(LDFLAGS)
 
 documentation: Doxygen/doxy.in
 	doxygen $^
 
 .PHONY: documentation
 
-main.o: # include/dog.h include/animal.h include/snake.h \
- include/helper_functions.h
+main.o: $(dirI)/Tree.h 
 
-# src/animal.o: include/animal.h 
-
-# src/dog.o: include/animal.h include/dog.h
-# src/snake.o: include/animal.h include/snake.h
-# src/helper_functions.o: include/animal.h include/helper_functions.h
+src/Tree.o: $(dirI)/Tree.h 
 
 format: $(SRC) $(INC)
 	@clang-format -i $^ 2>/dev/null || echo "Please install clang-format to run this commands"
