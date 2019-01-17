@@ -16,6 +16,7 @@
 #include <iostream>
 #include <utility>
 #include <memory>
+#include <BST_utility.h>
 
 
 
@@ -37,7 +38,7 @@ template < class T, class U >
   ///@{
 
   /**
-   *  @struct Node Tree.h "include/Tree.h"
+   *  @class Node Tree.h "include/Tree.h"
    *
    *  @brief The class Node
    *
@@ -47,22 +48,70 @@ template < class T, class U >
    *  The templated scheme is deduced from the owner class Tree.
    */
   struct Node : public std::pair< T, U > {
-    //T key;
-    //U val;
+
+    /// Pointer to parent Node
     std::unique_ptr<Node> parent = nullptr;
+
+    /// Pointer to left Node
     std::unique_ptr<Node> left = nullptr;
+
+    /// Pointer to right Node
     std::unique_ptr<Node> right = nullptr;
+
+  /**
+   *  @name Constructors/Destructor
+   */
+  ///@{
+
     Node ( T key, U value, std::unique_ptr<Node> par )
       : std::pair< T, U >{ key, value }, parent{par} {}
     /* Node(const T& v, Node* n) : val{v}, next{n} {} */
+
     ~Node() = default;
 
-    // std::unique_ptr<Node> get_direction ( direction dir ) {
-    //   if ( dir == direction::left )
-    // 	return left;
-    //   else
-    // 	return right;
-    // }
+  ///@}
+
+  /**
+   *  @name Public functions of the struct Node
+   */
+  ///@{
+
+
+    /**
+     *  @brief get the pointer corresponding to bst::direction
+     *  
+     *  @param dir the direction to take
+     *
+     *  @return pointer to child in the given direction
+     */
+    std::unique_ptr<Node> get_direction ( bst::direction dir ) {
+      
+      if ( dir == bst::direction::left ) return left;
+      else return right;
+      
+    }
+
+
+    /**
+     *  @brief set the pointer corresponding to bst::direction
+     *  
+     *  @param dir the direction to set
+     *  
+     *  @param new_child pointer to the new child
+     *
+     *  @return none
+     */
+    void set_at_direction ( bst::direction dir, std::unique_ptr<Node> new_child ) {
+      
+      if ( dir == bst::direction::left ) left = new_child;
+      else return right = new_child;
+      
+    }
+
+    
+
+  ///@}
+    
   };
 
   ///@}
