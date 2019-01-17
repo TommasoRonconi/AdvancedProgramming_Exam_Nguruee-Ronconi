@@ -47,8 +47,11 @@ template < class T, class U >
    *  <EM> key </EM> and <EM> value </EM> of the tree, respectively.
    *  The templated scheme is deduced from the owner class Tree.
    */
-  struct Node : public std::pair< T, U > {
+  struct Node {
 
+    /// Content of the node
+    std::pair< T, U > content;
+    
     /// Pointer to parent Node
     std::unique_ptr<Node> parent = nullptr;
 
@@ -63,8 +66,8 @@ template < class T, class U >
    */
   ///@{
 
-    Node ( T key, U value, std::unique_ptr<Node> par )
-      : std::pair< T, U >{ key, value }, parent{par} {}
+    Node ( T key, U value, std::unique_ptr<Node> par = nullptr )
+    : content{ std::make_pair{ key, value } }, parent{par} {}
     /* Node(const T& v, Node* n) : val{v}, next{n} {} */
 
     ~Node() = default;
@@ -75,6 +78,10 @@ template < class T, class U >
    *  @name Public functions of the struct Node
    */
   ///@{
+
+    T key() { return content.first; }
+
+    U value() { return content.second; }
 
 
     /**
@@ -92,21 +99,21 @@ template < class T, class U >
     }
 
 
-    /**
-     *  @brief set the pointer corresponding to bst::direction
-     *  
-     *  @param dir the direction to set
-     *  
-     *  @param new_child pointer to the new child
-     *
-     *  @return none
-     */
-    void set_at_direction ( bst::direction dir, std::unique_ptr<Node> new_child ) {
+    /* /\** */
+    /*  *  @brief set the pointer corresponding to bst::direction */
+    /*  *   */
+    /*  *  @param dir the direction to set */
+    /*  *   */
+    /*  *  @param new_child pointer to the new child */
+    /*  * */
+    /*  *  @return none */
+    /*  *\/ */
+    /* void set_at_direction ( bst::direction dir, std::unique_ptr<Node> new_child ) { */
       
-      if ( dir == bst::direction::left ) left = new_child;
-      else return right = new_child;
+    /*   if ( dir == bst::direction::left ) left = new_child; */
+    /*   else return right = new_child; */
       
-    }
+    /* } */
     
 
   ///@}
@@ -136,7 +143,9 @@ template < class T, class U >
    *  @name Private functions of the class
    */
   ///@{
-  void m_insert(std::unique_ptr<Node> &newnode, Iterator & start, const bool substitute);
+  
+  void m_insert(std::unique_ptr<Node> newnode, Iterator start, const bool substitute);
+  
   ///@}
 
 public:
@@ -255,14 +264,18 @@ template < class T, class U >
 
 template < class T, class U >
   class Tree<T, U>::Iterator {
+  
   using Node = Tree<T, U>::Node;
 
-  Node* current;
+  std::unique_ptr<Node> current;
 
  public:
-  Iterator(Node* n) : current{n} {}
+  
+ Iterator( std::unique_ptr<Node> n ) : current{n} {}
+
   U& operator*() const { return current->value(); }
-  Iterator& operator++(); {
+  
+  Iterator& operator++() {
 
     if ( current->right() )
       current = current->right->leftmost();
@@ -270,14 +283,23 @@ template < class T, class U >
       current = current->parent();
       
     return *this;
+    
   }
+  
   Iterator operator++(int){
+    
     Iterator it{*this};
+    
     ++(*this);
+    
     return it;
+    
   }
+  
   bool operator==(const Iterator& other) { return current == other.current; }
+  
   bool operator!=(const Iterator& other) { return !(*this == other); }
+  
 };
 
 
@@ -286,12 +308,13 @@ template < class T, class U >
 
 template < class T, class U >
   class Tree<T, U>::ConstIterator : public Tree<T, U>::Iterator {
+    
  public:
     using parent = Tree<T, U>::Iterator;
-  using parent::Iterator;
-  const U& operator*() const { return parent::operator*(); }
-  // using parent::operator==;
-  // using parent::operator!=;
+    using parent::Iterator;
+    const U& operator*() const { return parent::operator*(); }
+    // using parent::operator==;
+    // using parent::operator!=;
 };
 
 
