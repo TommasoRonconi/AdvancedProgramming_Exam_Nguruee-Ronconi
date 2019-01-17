@@ -276,8 +276,6 @@ template < class T, class U >
     ++(*this);
     return it;
   }
-  
-
   bool operator==(const Iterator& other) { return current == other.current; }
   bool operator!=(const Iterator& other) { return !(*this == other); }
 };
