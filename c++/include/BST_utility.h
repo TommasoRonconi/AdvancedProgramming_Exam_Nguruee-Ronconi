@@ -33,8 +33,11 @@ enum class direction{left, right};
  *
  *  @return pointer to child in the given direction
  */
-std::unique_ptr<Node> get_direction(bst::direction dir)
+template<class T> 
+direction which_direction(const T keychild, const T keyparent)
 {
-    if (dir == bst::direction::left) return left
-    else return right;
+    if (keychild > keyparent) return direction::right;
+    else return direction::left;
+}
+
 }
