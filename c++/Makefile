@@ -43,9 +43,9 @@ documentation: $(dirD)/doxy.in
 
 .PHONY: documentation
 
-main.o: $(dirI)/Tree.h 
+main.o: $(dirI)/Tree.h $(dirI)/BST_utility.h
 
-src/Tree.o: $(dirI)/Tree.h 
+src/Tree.o: $(dirI)/Tree.h $(dirI)/BST_utility.h
 
 format: $(SRC) $(INC)
 	@clang-format -i $^ 2>/dev/null || echo "Please install clang-format to run this commands"
