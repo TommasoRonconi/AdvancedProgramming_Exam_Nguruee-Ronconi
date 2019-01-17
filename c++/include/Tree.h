@@ -84,7 +84,14 @@ template < class T, class U >
 
   ///@}
 
- public:
+  /**
+   *  @name Private functions of the class
+   */
+  ///@{
+  void m_insert(std::unique_ptr<Node> &newnode, const bool substitute);
+  ///@}
+
+public:
 
   /**
    *  @name Friends of the class Tree
@@ -164,7 +171,8 @@ template < class T, class U >
    */
   ///@{
 
-  void insert ( Node * newnode, const bool substitute );
+
+  void insert (const T key, const U value, const bool substitute );
 
   void clear ();
 
