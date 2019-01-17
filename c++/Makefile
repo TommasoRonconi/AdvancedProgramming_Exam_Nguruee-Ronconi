@@ -3,6 +3,7 @@ CXX = c++
 
 dirL = $(PWD)/src
 dirI = $(PWD)/include
+dirD = $(PWD)/Doxygen
 
 CXXFLAGS = -I$(dirI) -g -std=c++11 -Wall -Wextra
 
@@ -27,7 +28,7 @@ all: $(EXE)
 
 clean:
 	$(info clean up)
-	@rm -rf $(OBJ) $(EXE) $(dirL)/*~ $(dirI)/*~ *~ html latex
+	@rm -rf $(OBJ) $(EXE) $(dirL)/*~ $(dirI)/*~ $(dirD)/*~ *~ $(dirD)/html $(dirD)/latex 
 
 .PHONY: clean
 
@@ -37,7 +38,7 @@ clean:
 $(EXE): $(OBJ)
 	$(CXX) $^ -o $(EXE) $(LDFLAGS)
 
-documentation: Doxygen/doxy.in
+documentation: $(dirD)/doxy.in
 	doxygen $^
 
 .PHONY: documentation
