@@ -14,10 +14,10 @@
 #ifndef __TREE__
 #define __TREE__
 #include <iostream>
-#include <utility>
 #include <memory>
 #include <BST_utility.h>
-
+#include <Node.h>
+#include <Iterator.h>
 
 
 /**
@@ -30,88 +30,28 @@
  *  <EM> key </EM> and <EM> value </EM> of the tree, respectively.
  */
 template < class T, class U >
-  class Tree {
+class Tree {
 
+  using Node = struct Node< T, U >;
+  using Iterator = class Iterator< T, U >;
+  using ConstIterator = class ConstIterator< T, U >;
+  
   /**
    *  @name Custom-types owned by the class Tree
    */
   ///@{
 
-  /**
-   *  @class Node Tree.h "include/Tree.h"
-   *
-   *  @brief The class Node
-   *
-   *  This custom-type is used to handle objects of type <EM> Node
-   *  </EM>. It is templated on two types T and U for the  
-   *  <EM> key </EM> and <EM> value </EM> of the tree, respectively.
-   *  The templated scheme is deduced from the owner class Tree.
-   */
-  struct Node : public std::pair< T, U > {
-
-    /// Pointer to parent Node
-    std::unique_ptr<Node> parent = nullptr;
-
-    /// Pointer to left Node
-    std::unique_ptr<Node> left = nullptr;
-
-    /// Pointer to right Node
-    std::unique_ptr<Node> right = nullptr;
-
-  /**
-   *  @name Constructors/Destructor
-   */
-  ///@{
-
-    Node ( T key, U value, std::unique_ptr<Node> par )
-      : std::pair< T, U >{ key, value }, parent{par} {}
-    /* Node(const T& v, Node* n) : val{v}, next{n} {} */
-
-    ~Node() = default;
-
-  ///@}
-
-  /**
-   *  @name Public functions of the struct Node
-   */
-  ///@{
-
-
-    /**
-     *  @brief get the pointer corresponding to bst::direction
-     *  
-     *  @param dir the direction to take
-     *
-     *  @return pointer to child in the given direction
-     */
-    std::unique_ptr<Node> get_direction ( bst::direction dir ) {
-      
-      if ( dir == bst::direction::left ) return left;
-      else return right;
-      
-    }
-
-
-    /**
-     *  @brief set the pointer corresponding to bst::direction
-     *  
-     *  @param dir the direction to set
-     *  
-     *  @param new_child pointer to the new child
-     *
-     *  @return none
-     */
-    void set_at_direction ( bst::direction dir, std::unique_ptr<Node> new_child ) {
-      
-      if ( dir == bst::direction::left ) left = new_child;
-      else return right = new_child;
-      
-    }
-    
-
-  ///@}
-    
-  };
+  // /**
+  //  *  @class Node Tree.h "include/Tree.h"
+  //  *
+  //  *  @brief The class Node
+  //  *
+  //  *  This custom-type is used to handle objects of type <EM> Node
+  //  *  </EM>. It is templated on two types T and U for the  
+  //  *  <EM> key </EM> and <EM> value </EM> of the tree, respectively.
+  //  *  The templated scheme is deduced from the owner class Tree.
+  //  */
+  // struct Node;
 
   ///@}
 
@@ -131,12 +71,14 @@ template < class T, class U >
   std::unique_ptr<Node> tail = nullptr;
 
   ///@}
-
+  
   /**
    *  @name Private functions of the class
    */
   ///@{
-  void m_insert(std::unique_ptr<Node> &newnode, Iterator & start, const bool substitute);
+  
+  void m_insert( std::unique_ptr<Node> newnode, Iterator start, const bool substitute );
+  
   ///@}
 
 public:
@@ -164,34 +106,33 @@ public:
    *  @name Constructors/Destructor
    */
   ///@{
-  
+
+
+  /// default constructor
   Tree() = default;
 
-  /////////////////////////
-  // Copy semantics:
-
+  /// copy-constructor
   Tree( const Tree & t );
 
+  /// copy-assignment overload
   Tree& operator= (const Tree& t);
-  // end of copy semantics
-  /////////////////////////
 
-  /////////////////////////
-  // move semantics
+  
+  /// move ctor
+  Tree(Tree&& t) noexcept
+    : root{std::move(t.root)},
+      head{std::move(t.head)},
+      tail{std::move(t.tail)} {}
 
-  // move ctor
-  Tree(Tree&& v) noexcept = default/*: _size{std::move(v._size)}, elem{std::move(v.elem)} */;
-
-  // move assignment
-  Tree& operator=(Tree&& v) noexcept = default;/*  { */
-  /*   std::cout << "move assignment\n"; */
-  /*   _size = std::move(v._size); */
-  /*   elem = std::move(v.elem); */
-  /*   return *this; */
-  /* } */
-
-  // end move semantics
-  /////////////////////////
+  /// move assignment
+  Tree& operator=(Tree&& t) noexcept  {
+    
+    root = std::move(t.root);
+    head = std::move(t.head);
+    tail = std::move(t.tail);
+    
+    return *this;
+  }
   
   ~Tree() noexcept = default;
 
@@ -202,8 +143,8 @@ public:
    */
   ///@{
 
-  class Iterator;
-  class ConstIterator;
+  // class Iterator;
+  // class ConstIterator;
   Iterator begin() { return Iterator{ head.get() }; }
   Iterator end() { return Iterator{ tail.get() }; }
   Iterator top() { return Iterator{ root.get() }; }
@@ -230,7 +171,8 @@ public:
 
   ///@}
   
-};
+  
+}; // end of class Tree
 
 template < class T, class U >
   std::ostream& operator<< (std::ostream& os, const Tree< T,U >& t) {
@@ -251,50 +193,6 @@ template < class T, class U >
 /* } */
 
 // ===========================================================================
-
-
-template < class T, class U >
-  class Tree<T, U>::Iterator {
-  using Node = Tree<T, U>::Node;
-
-  Node* current;
-
- public:
-  Iterator(Node* n) : current{n} {}
-  U& operator*() const { return current->value(); }
-  Iterator& operator++(); {
-
-    if ( current->right() )
-      current = current->right->leftmost();
-    else
-      current = current->parent();
-      
-    return *this;
-  }
-  Iterator operator++(int){
-    Iterator it{*this};
-    ++(*this);
-    return it;
-  }
-  bool operator==(const Iterator& other) { return current == other.current; }
-  bool operator!=(const Iterator& other) { return !(*this == other); }
-};
-
-
-/* // =========================================================================== */
-
-
-template < class T, class U >
-  class Tree<T, U>::ConstIterator : public Tree<T, U>::Iterator {
- public:
-    using parent = Tree<T, U>::Iterator;
-  using parent::Iterator;
-  const U& operator*() const { return parent::operator*(); }
-  // using parent::operator==;
-  // using parent::operator!=;
-};
-
-
 
 
 #endif //__TREE__
