@@ -107,7 +107,6 @@ template < class T, class U >
       else return right = new_child;
       
     }
-
     
 
   ///@}
@@ -137,7 +136,7 @@ template < class T, class U >
    *  @name Private functions of the class
    */
   ///@{
-  void m_insert(std::unique_ptr<Node> &newnode, const bool substitute);
+  void m_insert(std::unique_ptr<Node> &newnode, Iterator & start, const bool substitute);
   ///@}
 
 public:
@@ -169,12 +168,12 @@ public:
   Tree() = default;
 
   /////////////////////////
-  /// Copy semantics:
+  // Copy semantics:
 
   Tree( const Tree & t );
 
   Tree& operator= (const Tree& t);
-  /// end of copy semantics
+  // end of copy semantics
   /////////////////////////
 
   /////////////////////////
@@ -262,16 +261,21 @@ template < class T, class U >
 
  public:
   Iterator(Node* n) : current{n} {}
-  T& operator*() const { return current->val; }
-  Iterator& operator++() {
-    current = current->next.get();
+  U& operator*() const { return current->value(); }
+  Iterator& operator++(); {
+
+    if ( current->right() )
+      current = current->right->leftmost();
+    else
+      current = current->parent();
+      
     return *this;
   }
-  // Iterator operator++(int){
-  //   Iterator it{*this};
-  //   ++(*this);
-  //   return it;
-  // }
+  Iterator operator++(int){
+    Iterator it{*this};
+    ++(*this);
+    return it;
+  }
   bool operator==(const Iterator& other) { return current == other.current; }
   bool operator!=(const Iterator& other) { return !(*this == other); }
 };
@@ -285,7 +289,7 @@ template < class T, class U >
  public:
     using parent = Tree<T, U>::Iterator;
   using parent::Iterator;
-  const T& operator*() const { return parent::operator*(); }
+  const U& operator*() const { return parent::operator*(); }
   // using parent::operator==;
   // using parent::operator!=;
 };
@@ -293,4 +297,4 @@ template < class T, class U >
 
 
 
-#endif
+#endif //__TREE__
