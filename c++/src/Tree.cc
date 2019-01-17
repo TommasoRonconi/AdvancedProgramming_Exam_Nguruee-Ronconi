@@ -1,13 +1,13 @@
 #include <Tree.h>
-#include <iostream>
-#include<memory>
-#include <BST_utility.h>
+// #include <iostream>
+// #include<memory>
+// #include <BST_utility.h>
 
 
 // ===========================================================================
 
-
-void Tree::m_insert(std::unique_ptr<Tree::Node> newnode, Tree::Iterator it,const bool substitute){
+template< class T, class U >
+void Tree< T, U >::m_insert(std::unique_ptr<Tree< T, U >::Node> newnode, Tree::Iterator it, const bool substitute){
   
   bst::direction dir = bst::which_direction( newnode->key(), it->key() );
      
@@ -24,12 +24,12 @@ void Tree::m_insert(std::unique_ptr<Tree::Node> newnode, Tree::Iterator it,const
 
 
 template <class T, class U>
-void Tree::insert(const T key, const U value, const bool substitute)
+void Tree< T, U >::insert(const T key, const U value, const bool substitute)
 {
-    Node newNode { key, value };
+    Node newnode { key, value };
     
     if (root) 
-      m_insert(&newNode, top(), substitute);
+      m_insert(&newnode, top(), substitute);
     else 
       root = newnode;
     
