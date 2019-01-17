@@ -5,7 +5,7 @@ dirL = $(PWD)/src
 dirI = $(PWD)/include
 dirD = $(PWD)/Doxygen
 
-CXXFLAGS = -I$(dirI) -g -std=c++11 -Wall -Wextra
+CXXFLAGS = -I$(dirI) -g -std=c++14 -Wall -Wextra
 
 SRC= main.cc $(dirL)/Tree.cc $(dirL)/Iterator.cc $(dirL)/Node.cc
 OBJ=$(SRC:.cc=.o)

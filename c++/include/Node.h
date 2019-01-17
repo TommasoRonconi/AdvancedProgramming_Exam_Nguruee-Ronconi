@@ -25,11 +25,45 @@ struct Node {
    */
   ///@{
 
-  Node () : content{ std::make_pair<T, U>() }, parent{ nullptr } {}
+  /// default constructor
+  Node () : content{ std::pair<T, U>{} }, parent{ nullptr } {}
 
-  Node ( T key, U value, std::unique_ptr<Node> par = nullptr )
-    : content{ std::make_pair<T,U>( key, value ) }, parent{par} {}
+  /// constructor that takes a key and a value as the input
+  Node ( T key, U value )
+    : content{ std::pair<T,U>( key, value ) } {}
   /* Node(const T& v, Node* n) : val{v}, next{n} {} */
+
+  // ==================== copy/move ===================
+  // /// copy-constructor
+  // Node( const Node & n ) : content{ n.content } {}
+
+  // /// copy-assignment overload ( just copies the content of node into a new Node with left, right, parent all pointing to nullptr )
+  // Node& operator= ( const Node& n ) {
+    
+  //   return Node{ n.key(), n.value() };
+    
+  // }
+
+  /// move-constructor
+  Node( Node && n ) noexcept
+    : content{std::move(n.content)},
+      parent{std::move(n.parent)},
+      left{std::move(n.left)},
+      right{std::move(n.right)} {}
+
+  /// move assignment
+  Node& operator=(Node&& n) noexcept  {
+
+    content = std::move(n.content);
+    parent = std::move(n.parent);
+    left = std::move(n.left);
+    right = std::move(n.right);
+    
+    return *this;
+    
+  }
+  // ==================================================
+  
 
   ~Node() = default;
 
@@ -54,8 +88,36 @@ struct Node {
    */
   std::unique_ptr<Node> get_direction ( bst::direction dir ) {
       
-    if ( dir == bst::direction::left ) return left;
-    else return right;
+    if ( dir == bst::direction::left ) return std::move( left );
+    else return std::move( right );
+      
+  }    
+
+
+  /**
+   *  @brief 
+   *
+   *  @param newnode reference to unique_ptr to Node
+   *  
+   *  @param dir the direction to take
+   *
+   *  @return 
+   */
+  void new_node ( std::unique_ptr<Node> & newnode, bst::direction dir ) {
+
+    std::unique_ptr<Node> tmp = std::move( parent );
+    if ( dir == bst::direction::left ) {
+      left = std::move( newnode );
+      newnode->parent = std::unique_ptr<Node>( this );
+    }
+    else {
+      right = std::move( newnode );
+      newnode->parent->operator=( * std::move(parent) );
+      // newnode->parent = nullptr;
+      // newnode->parent = std::move( parent );
+      // newnode->parent = std::make_shared< Node > ( & parent );
+      std::cout << "check\n";
+    }
       
   }    
 

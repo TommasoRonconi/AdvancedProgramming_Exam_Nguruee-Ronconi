@@ -71,6 +71,15 @@ class Tree {
   std::unique_ptr<Node> tail = nullptr;
 
   ///@}
+  
+  /**
+   *  @name Private functions of the class
+   */
+  ///@{
+  
+  void m_insert( std::unique_ptr<Node> newnode, Iterator start, const bool substitute );
+  
+  ///@}
 
 public:
 
@@ -97,34 +106,33 @@ public:
    *  @name Constructors/Destructor
    */
   ///@{
-  
+
+
+  /// default constructor
   Tree() = default;
 
-  /////////////////////////
-  // Copy semantics:
-
+  /// copy-constructor
   Tree( const Tree & t );
 
+  /// copy-assignment overload
   Tree& operator= (const Tree& t);
-  // end of copy semantics
-  /////////////////////////
 
-  /////////////////////////
-  // move semantics
+  
+  /// move ctor
+  Tree(Tree&& t) noexcept
+    : root{std::move(t.root)},
+      head{std::move(t.head)},
+      tail{std::move(t.tail)} {}
 
-  // move ctor
-  Tree(Tree&& v) noexcept = default/*: _size{std::move(v._size)}, elem{std::move(v.elem)} */;
-
-  // move assignment
-  Tree& operator=(Tree&& v) noexcept = default;/*  { */
-  /*   std::cout << "move assignment\n"; */
-  /*   _size = std::move(v._size); */
-  /*   elem = std::move(v.elem); */
-  /*   return *this; */
-  /* } */
-
-  // end move semantics
-  /////////////////////////
+  /// move assignment
+  Tree& operator=(Tree&& t) noexcept  {
+    
+    root = std::move(t.root);
+    head = std::move(t.head);
+    tail = std::move(t.tail);
+    
+    return *this;
+  }
   
   ~Tree() noexcept = default;
 
@@ -162,16 +170,7 @@ public:
   ConstIterator find ( const T key );
 
   ///@}
-
-private:
-  /**
-   *  @name Private functions of the class
-   */
-  ///@{
   
-  void m_insert( std::unique_ptr<Node> newnode, Iterator start, const bool substitute );
-  
-  ///@}
   
 }; // end of class Tree
 
