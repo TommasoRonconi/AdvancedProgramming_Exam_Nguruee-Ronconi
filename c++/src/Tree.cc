@@ -10,15 +10,16 @@
    *  @return pointer to child in the given direction
    */
 
-void Tree::insert ( const int k, const int v, bool sub ){
+template< class T, class U >
+void Tree< T, U >::insert ( const T key, const U value, const bool substitute ){
 
-  if (root)
+  if ( root )
 
-    root->insert( k, v, sub );
+    root->insert( key, value, substitute );
 
   else{
   
-    root.reset( new Node{ k, v } );
+    root.reset( new Node{ key, value } );
 
   }
 

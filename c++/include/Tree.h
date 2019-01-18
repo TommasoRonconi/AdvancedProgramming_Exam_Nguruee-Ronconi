@@ -72,15 +72,6 @@ class Tree {
 
   ///@}
   
-  /**
-   *  @name Private functions of the class
-   */
-  ///@{
-  
-  void m_insert( std::unique_ptr<Node> newnode, Iterator start, const bool substitute );
-  
-  ///@}
-
 public:
 
   /**
@@ -174,10 +165,10 @@ public:
   
 }; // end of class Tree
 
-template < class T, class U >
-  std::ostream& operator<< (std::ostream& os, const Tree< T,U >& t) {
+template < class ot, class ou >
+  std::ostream& operator<< (std::ostream& os, const Tree< ot, ou >& t) {
   
-  return ( os << t.tail );
+  return ( os << t.end() );
 }
 
 // ===========================================================================

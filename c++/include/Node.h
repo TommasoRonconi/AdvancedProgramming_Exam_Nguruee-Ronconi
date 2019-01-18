@@ -115,7 +115,7 @@ struct Node {
       
       if ( k == content.first && sub ) content.second = v;
       
-      if( k < content.first ) {
+      if( k < content.first ) 
         if( left ) {
 	  
           left->insert( k, v, sub );
@@ -123,7 +123,7 @@ struct Node {
 	  
         }
 
-      if ( k < content.first ) {
+      if ( k < content.first ) 
         if ( right ) {
 	  
           right->insert( k, v, sub );
