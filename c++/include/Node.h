@@ -38,11 +38,15 @@ struct Node {
   // Node( const Node & n ) : content{ n.content } {}
 
   // /// copy-assignment overload ( just copies the content of node into a new Node with left, right, parent all pointing to nullptr )
-  // Node& operator= ( const Node& n ) {
+   Node& operator= ( const Node& n ) {
+     std::cout<< "copying";
+     auto tmp = n;
+     (*this) = std::move(tmp);
+     std::cout << " )\n";
+     return *this;
+    //return Node{ n.key(), n.value() };
     
-  //   return Node{ n.key(), n.value() };
-    
-  // }
+   }
 
   /// move-constructor
   Node( Node && n ) noexcept
@@ -97,29 +101,33 @@ struct Node {
   /**
    *  @brief 
    *
-   *  @param newnode reference to unique_ptr to Node
+   *  @param insert reference to unique_ptr to Node
    *  
-   *  @param dir the direction to take
+   *  @param k for key, v for value and sub boolean to replace key if exists
    *
-   *  @return 
+   *  @return  void
    */
-  void new_node ( std::unique_ptr<Node> & newnode, bst::direction dir ) {
-
-    std::unique_ptr<Node> tmp = std::move( parent );
-    if ( dir == bst::direction::left ) {
-      left = std::move( newnode );
-      newnode->parent = std::unique_ptr<Node>( this );
-    }
-    else {
-      right = std::move( newnode );
-      newnode->parent->operator=( * std::move(parent) );
-      // newnode->parent = nullptr;
-      // newnode->parent = std::move( parent );
-      // newnode->parent = std::make_shared< Node > ( & parent );
-      std::cout << "check\n";
-    }
+    void Node::insert(int k, int v, bool sub){
+      if (k == content.first) {
+        content.second = v;
+      }
       
-  }    
+      if( k < content.first ) {
+        if(left){
+          left->insert(k,v,sub);
+          left.reset(new Node{k,v,this})
+        }
+      }
+
+      if( k < content.first ) {
+        if(right){
+          right->insert(k,v,sub);
+          right.reset(new Node{k,v,this})
+        }
+      }
+    
+    }
+
 
   ///@}
     
