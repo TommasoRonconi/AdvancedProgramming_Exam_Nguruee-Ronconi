@@ -84,12 +84,12 @@ public:
     friend std::ostream& operator<< ( std::ostream&, const Tree< ot, ou >& );
 
   /// operator[] overload, constant version
-  template < class ot, class ou >
-    ou& operator[] ( const ot& key ) const;
+  // template < class ot, class ou >
+  //   ou& operator[] ( const ot& key ) const;
 
-  /// operator[] overload, non-constant version
-  template < class ot, class ou >
-    ou& operator[] ( const ot& key );
+  // /// operator[] overload, non-constant version
+  // template < class ot, class ou >
+  //   ou& operator[] ( const ot& key );
 
   ///@}
 
@@ -101,6 +101,7 @@ public:
 
   /// default constructor
   Tree() = default;
+  // Tree () { std::cout << "default ctor\n"; }
 
   /// copy-constructor
   Tree( const Tree & t );
@@ -126,6 +127,7 @@ public:
   }
   
   ~Tree() noexcept = default;
+  // ~Tree() noexcept { std::cout << "default dtor\n"; };
 
   ///@}
 
@@ -152,7 +154,19 @@ public:
   ///@{
 
 
-  void insert (const T key, const U value, const bool substitute );
+  void insert ( const T key, const U value, const bool substitute ) {
+
+    if ( root )
+
+      root->insert( key, value, substitute );
+
+    else{
+  
+      root.reset( new Node{ key, value } );
+
+    }
+
+  }//;
 
   void clear ();
 
@@ -167,8 +181,11 @@ public:
 
 template < class ot, class ou >
   std::ostream& operator<< (std::ostream& os, const Tree< ot, ou >& t) {
-  
-  return ( os << t.end() );
+
+  if ( t.top() )
+    return ( os << t.end() );
+  else
+    return ( os << " Empty tree " );
 }
 
 // ===========================================================================

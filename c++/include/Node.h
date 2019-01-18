@@ -29,8 +29,8 @@ struct Node {
   Node () : content{ std::pair<T, U>{} }, parent{ nullptr } {}
 
   /// constructor that takes a key and a value as the input
-  Node ( T key, U value )
-    : content{ std::pair<T,U>( key, value ) } {}
+  Node ( T key, U value, Node * par = nullptr )
+    : content{ std::pair<T,U>( key, value ) }, parent{ par } {}
   /* Node(const T& v, Node* n) : val{v}, next{n} {} */
 
   // ==================== copy/move ===================
@@ -111,27 +111,32 @@ struct Node {
    *
    *  @return  void
    */
-    void insert (int k, int v, bool sub) {
+  void insert ( const T key, const U value, const bool substitute) {
       
-      if ( k == content.first && sub ) content.second = v;
+    if ( key == content.first && substitute ) content.second = value;
       
-      if( k < content.first ) 
-        if( left ) {
-	  
-          left->insert( k, v, sub );
-          left.reset( new Node { k, v, this } );
-	  
-        }
-
-      if ( k < content.first ) 
-        if ( right ) {
-	  
-          right->insert( k, v, sub );
-          right.reset( new Node{ k, v, parent } );
-	  
-        }
-    
+    if( key < content.first ) {
+      if( left ) 
+	left->insert( key, value, substitute );
+      left.reset( new Node { key, value, this } );
     }
+
+    if ( key > content.first ) {
+      if ( right ) 
+	right->insert( key, value, substitute );
+      right.reset( new Node{ key, value, parent } );	
+    }
+      
+  }
+
+  Node * leftmost () {
+
+    if ( left )
+      left->leftmost();
+    
+    return this;
+    
+  }
 
 
   ///@}

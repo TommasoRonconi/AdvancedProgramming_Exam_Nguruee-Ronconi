@@ -9,17 +9,17 @@ class Iterator {
   
   using Node = struct Node<T, U>;
   
-  std::unique_ptr<Node> current;
+  Node * current;
   
 public:
   
-  Iterator( std::unique_ptr<Node> n ) : current{ n } {}
+  Iterator( Node * n ) : current{ n } {}
 
   U& operator*() const { return current->value(); }
 
-  std::unique_ptr<Node> &operator->() const {
+  Node* &operator->() const {
     
-    return current.get();
+    return current;
     
   }
   

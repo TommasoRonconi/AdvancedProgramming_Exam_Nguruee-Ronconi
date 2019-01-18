@@ -2,28 +2,22 @@
 
 
 // ===========================================================================
-/**
-   *  @brief get the pointer corresponding 
-   *  
-   *  @param dir the direction to take
-   *
-   *  @return pointer to child in the given direction
-   */
 
-template< class T, class U >
-void Tree< T, U >::insert ( const T key, const U value, const bool substitute ){
 
-  if ( root )
+// template< class T, class U >
+// void Tree< T, U >::insert ( const T key, const U value, const bool substitute ) {
 
-    root->insert( key, value, substitute );
+//   if ( root )
 
-  else{
+//     root->insert( key, value, substitute );
+
+//   else{
   
-    root.reset( new Node{ key, value } );
+//     root.reset( new Node{ key, value } );
 
-  }
+//   }
 
-}
+// }
 
 
 

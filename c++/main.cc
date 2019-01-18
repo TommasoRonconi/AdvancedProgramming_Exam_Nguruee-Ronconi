@@ -1,13 +1,33 @@
-#include "Tree.h"
+#include <Tree.h>
 #include <memory>
 
 int main( /* int argc, char * argv[] */ ) {
 
+  // ================================================================================================
+  // =========================================== test Node ==========================================
+  // ================================================================================================
+  // Working tests:
+  // Node< int, double > N { 4, 5.1 };
+  // std::cout << N.key() << "  " << N.value() << std::endl;
+  // N.insert( 3, 6.2, true );
+  // std::cout << N.left->key() << "  " << N.left->value() << std::endl;
+  // std::cout << N.left->parent->key() << "  " << N.left->parent->value() << std::endl;
+  // N.left->insert( 2, 7.3, true );
+  // std::cout << N.left->right->key() << "  " << N.left->right->value() << std::endl;
+  // std::cout << N.left->right->parent->key() << "  " << N.left->right->parent->value() << std::endl;
+  // ================================================================================================
+  // Still not working (probably copy constructor needed (or kindof))
+  // std::cout << N.leftmost()->key() << "  " << N.leftmost()->value() << std::endl;
+  // Node< int, double > * N2 = N.leftmost();
+  // std::cout << N2->key() << "  " << N2->value() << std::endl;
+  // ================================================================================================
+  
   Tree< int, double > T {};
   int key = 4;
   double value = 5.1;
   bool sub = true;
   T.insert( key, value, sub );
+
   // Node< int, double> N1 { 4, 2.5 };
   // std::cout << N1.key() << "  " << N1.value() << std::endl;
   // if ( N1.left )

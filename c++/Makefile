@@ -32,10 +32,17 @@ LDFLAGS = -Wl,-rpath,$(dirL)
 
 # objects
 
-OBJs = main.o $(dirL)/Tree.o $(dirL)/Node.o $(dirL)/Iterator.o
+OBJs = $(dirL)/Tree.o main.o # $(dirL)/Node.o $(dirL)/Iterator.o 
 
 #################################################################
 # Rules:
+
+# eliminate default suffixes
+.SUFFIXES:
+SUFFIXES =
+
+# just consider our own suffixes
+.SUFFIXES: .cc .o 
 
 # default rule
 
@@ -53,13 +60,13 @@ $(exe_name): $(OBJs)
 
 # pre-requisites
 
-main.o: $(dirI)/*.h
+main.o: $(dirL)/*.o
 
-$(dirI)/Tree.h: $(dirI)/Node.h $(dirI)/Iterator.h $(dirI)/BST_utility.h
+$(dirL)/Tree.o: $(dirI)/Node.h $(dirI)/Iterator.h $(dirI)/BST_utility.h
 
-$(dirI)/Iterator.h: $(dirI)/Node.h  $(dirI)/BST_utility.h
+# $(dirL)/Iterator.o: $(dirI)/Node.h  $(dirI)/BST_utility.h
 
-$(dirI)/Node.h: $(dirI)/BST_utility.h
+# $(dirL)/Node.o: $(dirI)/BST_utility.h
 
 # cleaning rule and co.
 
