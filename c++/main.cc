@@ -20,6 +20,7 @@ int main( /* int argc, char * argv[] */ ) {
   N1.new_node( N4, bst::direction::right );
   if ( N1.right ) 
     std::cout << N1.right->key() << "  " << N1.right->value() << std::endl;
+  // auto N5 = std::make_unique< Node< int, double > >(  N1  );
   
 
   // ============================================================

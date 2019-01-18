@@ -12,7 +12,7 @@ struct Node {
   std::pair< T, U > content;
     
   /// Pointer to parent Node
-  std::unique_ptr<Node> parent = nullptr;
+  Node * parent = nullptr;
 
   /// Pointer to left Node
   std::unique_ptr<Node> left = nullptr;
@@ -49,27 +49,31 @@ struct Node {
    }
 
   /// move-constructor
-  Node( Node && n ) noexcept
-    : content{std::move(n.content)},
-      parent{std::move(n.parent)},
-      left{std::move(n.left)},
-      right{std::move(n.right)} {}
+  // Node( Node && n ) noexcept
+  //   : content{std::move(n.content)},
+  //     parent{std::move(n.parent)},
+  //     left{std::move(n.left)},
+  //     right{std::move(n.right)} {}
 
-  /// move assignment
-  Node& operator=(Node&& n) noexcept  {
+  // /// move assignment
+  // Node& operator=(Node&& n) noexcept  {
 
-    content = std::move(n.content);
-    parent = std::move(n.parent);
-    left = std::move(n.left);
-    right = std::move(n.right);
+  //   content = std::move(n.content);
+  //   parent = std::move(n.parent);
+  //   left = std::move(n.left);
+  //   right = std::move(n.right);
     
-    return *this;
+  //   return *this;
     
-  }
+  // }
   // ==================================================
   
 
   ~Node() = default;
+
+  /// operator<< overload
+  template < class ot, class ou >
+    friend std::ostream& operator<< ( std::ostream&, const Node< ot, ou >& n );
 
   ///@}
 
@@ -107,24 +111,25 @@ struct Node {
    *
    *  @return  void
    */
-    void Node::insert(int k, int v, bool sub){
-      if (k == content.first) {
-        content.second = v;
-      }
+    void insert (int k, int v, bool sub) {
+      
+      if ( k == content.first && sub ) content.second = v;
       
       if( k < content.first ) {
-        if(left){
-          left->insert(k,v,sub);
-          left.reset(new Node{k,v,this})
+        if( left ) {
+	  
+          left->insert( k, v, sub );
+          left.reset( new Node { k, v, this } );
+	  
         }
-      }
 
-      if( k < content.first ) {
-        if(right){
-          right->insert(k,v,sub);
-          right.reset(new Node{k,v,this})
+      if ( k < content.first ) {
+        if ( right ) {
+	  
+          right->insert( k, v, sub );
+          right.reset( new Node{ k, v, parent } );
+	  
         }
-      }
     
     }
 
@@ -132,5 +137,18 @@ struct Node {
   ///@}
     
 }; // end of class Node
+
+
+template < class T, class U >
+  std::ostream& operator<< (std::ostream& os, const Node< T,U >& n) {
+
+  if ( n.parent ) {
+    os << n.key() << ":\t" << n.value() << "\n";
+    return ( os << *( n.parent ) );
+  }
+  
+  return ( os << n.key() << ":\t" << n.value() );
+  
+}
 
 #endif //__NODE__
