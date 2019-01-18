@@ -12,7 +12,7 @@ struct Node {
   std::pair< T, U > content;
     
   /// Pointer to parent Node
-  std::unique_ptr<Node> parent = nullptr;
+  Node * parent = nullptr;
 
   /// Pointer to left Node
   std::unique_ptr<Node> left = nullptr;
@@ -45,23 +45,23 @@ struct Node {
   // }
 
   /// move-constructor
-  Node( Node && n ) noexcept
-    : content{std::move(n.content)},
-      parent{std::move(n.parent)},
-      left{std::move(n.left)},
-      right{std::move(n.right)} {}
+  // Node( Node && n ) noexcept
+  //   : content{std::move(n.content)},
+  //     parent{std::move(n.parent)},
+  //     left{std::move(n.left)},
+  //     right{std::move(n.right)} {}
 
-  /// move assignment
-  Node& operator=(Node&& n) noexcept  {
+  // /// move assignment
+  // Node& operator=(Node&& n) noexcept  {
 
-    content = std::move(n.content);
-    parent = std::move(n.parent);
-    left = std::move(n.left);
-    right = std::move(n.right);
+  //   content = std::move(n.content);
+  //   parent = std::move(n.parent);
+  //   left = std::move(n.left);
+  //   right = std::move(n.right);
     
-    return *this;
+  //   return *this;
     
-  }
+  // }
   // ==================================================
   
 
@@ -112,10 +112,11 @@ struct Node {
     }
     else {
       right = std::move( newnode );
-      newnode->parent->operator=( * std::move(parent) );
+      // newnode->parent = std::unique_ptr<Node>( parent.get() );
+      // newnode->parent->operator=( * std::move(parent) );
       // newnode->parent = nullptr;
       // newnode->parent = std::move( parent );
-      // newnode->parent = std::make_shared< Node > ( & parent );
+      newnode->parent = std::make_unique< Node > ( *parent.get() );
       std::cout << "check\n";
     }
       

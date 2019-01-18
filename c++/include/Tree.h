@@ -183,15 +183,6 @@ template < class T, class U >
   return os;
 }
 
-/* template <typename T> */
-/* void Tree<T>::push_back(const T& t) { */
-/*   auto tmp = head.get(); */
-/*   while (tmp->next != nullptr) {  // equivalent while(tmp->next) */
-/*     tmp = tmp->next.get(); */
-/*   } */
-/*   tmp->next.reset(new Node{t, nullptr}); */
-/* } */
-
 // ===========================================================================
 
 
