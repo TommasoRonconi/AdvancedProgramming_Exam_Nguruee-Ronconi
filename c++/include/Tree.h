@@ -177,10 +177,7 @@ public:
 template < class T, class U >
   std::ostream& operator<< (std::ostream& os, const Tree< T,U >& t) {
   
-  /* for (const auto& x : l) */
-  /*   os << x << " "; */
-  
-  return os;
+  return ( os << t.tail );
 }
 
 // ===========================================================================
