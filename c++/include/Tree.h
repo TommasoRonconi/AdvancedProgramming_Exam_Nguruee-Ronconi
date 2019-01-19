@@ -182,7 +182,30 @@ public:
 
   void balance ();
 
-  ConstIterator find ( const T key );
+  Iterator find ( const T key, Iterator it = top() ){
+
+    if(key == it->key())
+      return it;
+
+    if ( key < it->key() && ( it->left ) )
+      return find( key, Iterator( it->left ) );
+
+    if ( key < it->key() && !( it->left ))
+      return end();
+
+    if ( key > it->key() && (it->right))
+      return find( key, Iterator( it->right ) );
+
+    if ( key > it->key() && !(it->right))
+      return end();
+      
+
+
+  }
+
+
+  
+  
 
   ///@}
   
