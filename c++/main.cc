@@ -59,7 +59,7 @@ int main( /* int argc, char * argv[] */ ) {
 
   // std::cout << T.find( 7, T.top() )->key() << std::endl;
 
-
+    std::cout << T[5] << std::endl;
 
   // it++;
   // std::cout << ( it )->key() << std::endl;
