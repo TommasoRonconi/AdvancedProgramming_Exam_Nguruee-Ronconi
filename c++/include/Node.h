@@ -31,22 +31,21 @@ struct Node {
   /// constructor that takes a key and a value as the input
   Node ( T key, U value, Node * par = nullptr )
     : content{ std::pair<T,U>( key, value ) }, parent{ par } {}
-  /* Node(const T& v, Node* n) : val{v}, next{n} {} */
 
   // ==================== copy/move ===================
   // /// copy-constructor
   // Node( const Node & n ) : content{ n.content } {}
 
   // /// copy-assignment overload ( just copies the content of node into a new Node with left, right, parent all pointing to nullptr )
-   Node& operator= ( const Node& n ) {
-     std::cout<< "copying";
-     auto tmp = n;
-     (*this) = std::move(tmp);
-     std::cout << " )\n";
-     return *this;
+   // Node& operator= ( const Node& n ) {
+   //   std::cout<< "copying";
+   //   auto tmp = n;
+   //   (*this) = std::move(tmp);
+   //   std::cout << " )\n";
+   //   return *this;
     //return Node{ n.key(), n.value() };
     
-   }
+   // }
 
   /// move-constructor
   // Node( Node && n ) noexcept
@@ -82,9 +81,9 @@ struct Node {
    */
   ///@{
 
-  T key() { return content.first; }
+  T key() const { return content.first; }
 
-  U value() { return content.second; }
+  U value() const { return content.second; }
 
 
   /**
@@ -94,12 +93,12 @@ struct Node {
    *
    *  @return pointer to child in the given direction
    */
-  std::unique_ptr<Node> get_direction ( bst::direction dir ) {
+  // std::unique_ptr<Node> get_direction ( bst::direction dir ) {
       
-    if ( dir == bst::direction::left ) return std::move( left );
-    else return std::move( right );
+  //   if ( dir == bst::direction::left ) return std::move( left );
+  //   else return std::move( right );
       
-  }    
+  // }    
 
 
   /**
@@ -118,23 +117,26 @@ struct Node {
     if( key < content.first ) {
       if( left ) 
 	left->insert( key, value, substitute );
-      left.reset( new Node { key, value, this } );
+      else
+	left.reset( new Node { key, value, this } );
     }
 
     if ( key > content.first ) {
       if ( right ) 
 	right->insert( key, value, substitute );
-      right.reset( new Node{ key, value, parent } );	
+      else 
+	right.reset( new Node{ key, value, parent } );	
     }
       
   }
 
   Node * leftmost () {
 
+   
     if ( left )
-      left->leftmost();
-    
-    return this;
+      return left->leftmost();
+    else
+      return this;
     
   }
 

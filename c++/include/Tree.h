@@ -33,8 +33,6 @@ template < class T, class U >
 class Tree {
 
   using Node = struct Node< T, U >;
-  using Iterator = class Iterator< T, U >;
-  using ConstIterator = class ConstIterator< T, U >;
   
   /**
    *  @name Custom-types owned by the class Tree
@@ -73,6 +71,8 @@ class Tree {
   ///@}
   
 public:
+  using Iterator = class Iterator< T, U >;
+  using ConstIterator = class ConstIterator< T, U >;
 
   /**
    *  @name Friends of the class Tree
@@ -156,17 +156,11 @@ public:
 
   void insert ( const T key, const U value, const bool substitute ) {
 
-    if ( root )
+    if ( root ) root->insert( key, value, substitute );
 
-      root->insert( key, value, substitute );
+    else root.reset( new Node{ key, value } );
 
-    else{
-  
-      root.reset( new Node{ key, value } );
-
-    }
-
-  }//;
+  }
 
   void clear ();
 

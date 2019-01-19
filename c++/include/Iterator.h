@@ -15,20 +15,16 @@ public:
   
   Iterator( Node * n ) : current{ n } {}
 
-  U& operator*() const { return current->value(); }
+  Node& operator*() { return *current; }
 
-  Node* &operator->() const {
-    
-    return current;
-    
-  }
+  Node* operator->() const { return current;  }
   
   Iterator& operator++() {
 
-    if ( current->right() )
-      current = current->right->leftmost();
+    if ( current->right )
+      current = current->right->leftmost() ;
     else
-      current = current->parent();
+      current = current->parent;
       
     return *this;
     
@@ -46,7 +42,7 @@ public:
   
   bool operator==(const Iterator& other) { return current == other.current; }
   
-  bool operator!=(const Iterator& other) { return !(*this == other); }
+  bool operator!=(const Iterator& other) { return !( *this == other ); }
   
 };
 

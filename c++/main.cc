@@ -27,6 +27,40 @@ int main( /* int argc, char * argv[] */ ) {
   double value = 5.1;
   bool sub = true;
   T.insert( key, value, sub );
+  Tree< int, double >::Iterator  it { T.top() };
+  T.insert( 3, 6.2, sub );
+  if ( it->left ) {
+    std::cout << "check 'it->left'" << std::endl;
+    std::cout << it->left->key() << std::endl;
+    Tree< int, double >::Iterator  it2 { it->left.get() };
+  }
+  Tree< int, double >::Iterator  it2 { it->left.get() };
+  //if ( !it2->left )
+  it2->insert( 2, 7.3, sub );
+  std::cout << it->left->left->key() << std::endl;
+  T.insert( 1, 8.4, sub );
+  std::cout << it->left->left->left->key() << std::endl;
+  std::cout << it->leftmost()->key() << std::endl;
+  Tree< int, double >::Iterator it3 { it->leftmost() };
+  std::cout << (++it3)->key() << std::endl;
+
+  T.insert( 5, 9.5, sub );
+  // std::cout << ( ++it )->key() << std::endl;
+  it++;
+  std::cout << ( it )->key() << std::endl;
+
+  //std::cout << it->leftmost()->key() << std::endl;
+    
+  // T.insert( 2, 7.3, sub );
+  // Tree< int, double >::Iterator  it = T.top();
+
+  // std::cout << it->left->key() << std::endl;
+  // auto NN = it->leftmost();
+  // std::cout << NN->key() << std::endl;
+  // if ( it->left )
+  //   std::cout << "check" << std::endl;
+  
+  // std::cout << *( T.top()->leftmost() ) << "  " << *( T.top()->leftmost() ) << std::endl;
 
   // Node< int, double> N1 { 4, 2.5 };
   // std::cout << N1.key() << "  " << N1.value() << std::endl;
