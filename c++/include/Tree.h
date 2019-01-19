@@ -208,9 +208,18 @@ public:
     
   }
 
+ 
+  U& operator[](const T key) {
 
-  
-  
+    Iterator n = find(key, top());
+    if (n == end())
+      insert(key,U{}, false);
+    return n->value();
+  }
+
+  const U& operator[](const T key) const {
+    return this->operator[]( key );
+  }
 
   ///@}
   
@@ -232,6 +241,9 @@ std::ostream& operator<< (std::ostream& os, Tree< ot, ou >& t) {
   return os;
   
 }
+
+// ===========================================================================
+
 
 // ===========================================================================
 

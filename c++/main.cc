@@ -49,9 +49,11 @@ int main( /* int argc, char * argv[] */ ) {
   // Node< int, double > * nnn = it.operator->();
   // std::cout << nnn->key() << std::endl;
   // delete [] nnn;
+    
+
+  std::cout << T[5] << std::endl;
 
   T.clear();
-    
 
   // it++;
   // std::cout << ( it )->key() << std::endl;
