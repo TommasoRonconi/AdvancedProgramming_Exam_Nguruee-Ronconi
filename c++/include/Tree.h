@@ -67,14 +67,7 @@ class Tree {
   /// The tail of the BST
   Node * tail = nullptr;
 
-  // /// The root node of the BST
-  // std::unique_ptr<Node> root = nullptr;
-
-  // /// The head of the BST
-  // std::unique_ptr<Node> head = nullptr;
-
-  // /// The tail of the BST
-  // std::unique_ptr<Node> tail = nullptr;
+  void kernel_balance ( Tree& Tnew, Iterator< T, U > startpoint, size_t steps, Iterator< T, U > endpoint ); 
 
   ///@}
   
@@ -111,28 +104,41 @@ public:
   Tree() = default;
   // Tree () { std::cout << "default ctor\n"; }
 
-  /// copy-constructor
-  Tree( const Tree & t );
+  // default copy semantic is fine
+  Tree(const Tree&) = default;
+  Tree& operator=(const Tree&) = default;
 
-  /// copy-assignment overload
-  Tree& operator= (const Tree& t);
+  // move semantic is fine as well
+  Tree(Tree&&) = default;
+  Tree& operator=(Tree&&) = default;
+  
+  /// copy-constructor
+  // Tree( const Tree & t );
+
+  // /// copy-assignment overload
+  // Tree& operator= (const Tree& t);
 
   
-  /// move ctor
-  Tree(Tree&& t) noexcept
-    : root{std::move(t.root)},
-      head{std::move(t.head)},
-      tail{std::move(t.tail)} {}
+  // /// move ctor
+  // Tree ( Tree< T, U >&& t ) noexcept
+  //   : root{ t.root },
+  //     head{ t.head },
+  //     tail{ t.tail } {}
+  //   // : root{ std::move( t.root ) },
+  //   //   head{ std::move( t.head ) },
+  //   //   tail{ std::move( t.tail ) } {}
 
-  /// move assignment
-  Tree& operator=(Tree&& t) noexcept  {
+  // /// move assignment
+  // Tree& operator=( Tree< T, U >&& t ) noexcept  {
     
-    root = std::move(t.root);
-    head = std::move(t.head);
-    tail = std::move(t.tail);
+  //   root = std::move(t.root);
+  //   head = t.head;
+  //   tail = t.tail;
+  //   // head = std::move(t.head);
+  //   // tail = std::move(t.tail);
     
-    return *this;
-  }
+  //   return *this;
+  // }
   
   ~Tree() noexcept = default;
   // ~Tree() noexcept { std::cout << "default dtor\n"; };
@@ -186,7 +192,7 @@ public:
 
   void balance ();
 
-  Iterator find ( const T key, Iterator it ){
+  Iterator find ( const T key, Iterator it ) {
 
     if ( key == it->key() )
       return it;
@@ -242,6 +248,68 @@ template < class ot, class ou >
 }
 
 // ===========================================================================
+
+
+template < class T, class U >
+void Tree< T, U >::balance() {
+
+  size_t size = 0;
+
+  Iterator it = begin();
+
+  while ( it != end() ) { ++size; ++it; }
+  std::cout << "check " << size << std::endl;
+
+  Tree< T, U > T_new {};
+  
+  kernel_balance( T_new, begin(), 0.5 * size, end() );
+
+  /* here calls the recursive function */
+
+  // last step:
+  // ( with the hope that the new tree's nodes do not go
+  //   out of scope when exiting balance() function )
+  root->clear();
+  // auto temp = T_new.top().operator->() ;
+  // root.reset( temp );
+  // root.reset( T_new.top().operator->() );
+  // tail = std::move( T_new.end().operator->() );
+  *this = std::move( T_new );
+  
+}
+
+// ===========================================================================
+
+
+template < class T, class U >
+void Tree< T, U >::kernel_balance( Tree& T_new, Iterator startpoint, size_t steps, Iterator endpoint ) {
+
+  Iterator it = startpoint;
+  size_t ii = 0;
+
+
+  if ( steps/2 > 2 ) {
+
+    for ( ; ii < steps; ++ii, ++it );
+    std::cout << "inserted: " << it->key() << "  " << it->value() << std::endl;
+    T_new.insert( it->key(), it->value(), true );
+    
+    kernel_balance ( T_new, startpoint, ( steps/2 - 1), it );
+    kernel_balance ( T_new, ++it, steps/2, endpoint );
+    
+  }
+  else {
+    while ( it != endpoint ) {
+      
+      std::cout << "inserted: " << it->key() << "  " << it->value() << std::endl;
+      T_new.insert( it->key(), it->value(), true );
+      ++it;
+
+    } 
+  }
+  
+  
+}
 
 
 // ===========================================================================

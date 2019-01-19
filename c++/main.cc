@@ -23,19 +23,30 @@ int main( /* int argc, char * argv[] */ ) {
   // ================================================================================================
   
   Tree< int, double > T {};
-  int key = 4;
-  double value = 5.1;
-  bool sub = true;
-  T.insert( key, value, sub );
   
+  bool sub = true;
   T.insert( 2, 7.3, sub );
   T.insert( 3, 6.2, sub );
   T.insert( 1, 8.4, sub );
   T.insert( 6, 12., sub );
+  int key = 4;
+  double value = 5.1;
+  T.insert( key, value, sub );
   T.insert( 5, 9.5, sub );
   T.insert( 7, 1.1, sub );
 
   std::cout << T << std::endl;
+
+  T.balance();
+
+  std::cout << T << std::endl;
+  Tree< int, double >::Iterator it = T.top();
+  std::cout << it->key() << std::endl;
+  //  std::cout << it->left->key() << std::endl;
+  std::cout << it->right->key() << std::endl;
+  std::cout << it->right->right->key() << std::endl;
+  std::cout << it->right->right->right->key() << std::endl;
+  
 
   // T.clear( T.begin() );
   // std::cout << T.find( 7, T.top() )->key() << std::endl;
