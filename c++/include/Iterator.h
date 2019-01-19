@@ -12,7 +12,11 @@ class Iterator {
   Node * current;
   
 public:
-  
+
+  // default ctor
+  Iterator () noexcept = default;
+
+  // Ctor 
   Iterator( Node * n ) : current{ n } {}
 
   Node& operator*() { return *current; }
@@ -47,18 +51,23 @@ public:
 };
 
 
+
+
 /* // =========================================================================== */
 
 
 template < class T, class U >
   class ConstIterator : public Iterator<T, U> {
+  
+  using Node = struct Node<T, U>;
     
  public:
-    using parent = Iterator<T, U>;
-    using parent::Iterator;
-    const U& operator*() const { return parent::operator*(); }
-    using parent::operator==;
-    using parent::operator!=;
+  using parent = Iterator<T, U>;
+  using parent::Iterator;
+  const Node* operator->() const { return parent::operator->();  }
+  const Node& operator*() const { return parent::operator*(); }
+  using parent::operator==;
+  using parent::operator!=;
 };
 
 #endif //__ITERATOR__

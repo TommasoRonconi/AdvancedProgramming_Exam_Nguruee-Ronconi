@@ -110,9 +110,9 @@ struct Node {
    *
    *  @return  void
    */
-  void insert ( const T key, const U value, const bool substitute) {
+  void insert ( const T key, const U value, const bool substitute = false ) {
       
-    if ( key == content.first && substitute ) content.second = value;
+    if ( substitute && key == content.first ) content.second = value;
       
     if( key < content.first ) {
       if( left ) 
@@ -138,6 +138,21 @@ struct Node {
     else
       return this;
     
+  }
+
+  void clear () {
+
+    if ( left ) {
+      left->clear();
+      left.reset();
+    }
+
+    if ( right ) {
+      right->clear();
+      right.reset();
+    }
+
+    std::cout << "ehi (" << content.first << ", " << content.second << ")" << std::endl;
   }
 
 

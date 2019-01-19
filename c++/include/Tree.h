@@ -180,12 +180,14 @@ public:
 
   void clear () {
 
+    root->clear();
+    root.reset();
+    
   }
 
   void balance ();
 
   Iterator find ( const T key, Iterator it ){
-  // Iterator find ( const T key, Iterator it = this->top() ){
 
     if ( key == it->key() )
       return it;

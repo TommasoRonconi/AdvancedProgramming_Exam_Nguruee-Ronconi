@@ -27,39 +27,31 @@ int main( /* int argc, char * argv[] */ ) {
   double value = 5.1;
   bool sub = true;
   T.insert( key, value, sub );
-  // std::cout << T.top()->key() << std::endl;
-  // std::cout << T.begin()->key() << std::endl;
-  // std::cout << T.end()->key() << std::endl;
-
-
-  // Tree< int, double >::Iterator  it { T.top() };
-  T.insert( 3, 6.2, sub );
-  // std::cout << T.top()->key() << std::endl;
-  // std::cout << T.begin()->key() << std::endl;
-  // std::cout << T.end()->key() << std::endl;
-
-  // if ( it->left ) {
-  //   std::cout << "check 'it->left'" << std::endl;
-  //   std::cout << it->left->key() << std::endl;
-  //   Tree< int, double >::Iterator  it2 { it->left.get() };
-  // }
-  // Tree< int, double >::Iterator  it2 { it->left.get() };
+  
   T.insert( 2, 7.3, sub );
-  // it2->insert( 2, 7.3, sub );
-  // std::cout << it->left->left->key() << std::endl;
+  T.insert( 3, 6.2, sub );
   T.insert( 1, 8.4, sub );
-  // std::cout << it->left->left->left->key() << std::endl;
-  // std::cout << it->leftmost()->key() << std::endl;
-  // Tree< int, double >::Iterator it3 { it->leftmost() };
-  // std::cout << (++it3)->key() << std::endl;
-
+  T.insert( 6, 12., sub );
   T.insert( 5, 9.5, sub );
+  T.insert( 7, 1.1, sub );
 
   std::cout << T << std::endl;
 
+  // T.clear( T.begin() );
   // std::cout << T.find( 7, T.top() )->key() << std::endl;
+  // Tree< int, double >::Iterator it = T.begin();
+  // std::cout << it->value() << std::endl;
+  // Tree< int, double >::Iterator it2;
+  // it2 = it;
+  // std::cout << it2->value() << std::endl;
+  // T.clear( T.begin() );
 
+  // Node< int, double > * nnn = it.operator->();
+  // std::cout << nnn->key() << std::endl;
+  // delete [] nnn;
 
+  T.clear();
+    
 
   // it++;
   // std::cout << ( it )->key() << std::endl;
