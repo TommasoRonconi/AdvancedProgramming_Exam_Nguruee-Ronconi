@@ -55,10 +55,10 @@ template < class T, class U >
     
  public:
     using parent = Iterator<T, U>;
-    // using parent::Iterator<T, U>;
+    using parent::Iterator;
     const U& operator*() const { return parent::operator*(); }
-    // using parent::operator==;
-    // using parent::operator!=;
+    using parent::operator==;
+    using parent::operator!=;
 };
 
 #endif //__ITERATOR__

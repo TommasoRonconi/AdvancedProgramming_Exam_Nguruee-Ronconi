@@ -63,10 +63,19 @@ class Tree {
   std::unique_ptr<Node> root = nullptr;
 
   /// The head of the BST
-  std::unique_ptr<Node> head = nullptr;
+  Node * head = nullptr;
 
   /// The tail of the BST
-  std::unique_ptr<Node> tail = nullptr;
+  Node * tail = nullptr;
+
+  // /// The root node of the BST
+  // std::unique_ptr<Node> root = nullptr;
+
+  // /// The head of the BST
+  // std::unique_ptr<Node> head = nullptr;
+
+  // /// The tail of the BST
+  // std::unique_ptr<Node> tail = nullptr;
 
   ///@}
   
@@ -138,12 +147,12 @@ public:
 
   // class Iterator;
   // class ConstIterator;
-  Iterator begin() { return Iterator{ head.get() }; }
-  Iterator end() { return Iterator{ tail.get() }; }
+  Iterator begin() { return Iterator{ tail }; }
+  Iterator end() { return Iterator{ head }; }
   Iterator top() { return Iterator{ root.get() }; }
 
-  ConstIterator cbegin() const { return ConstIterator{ head.get() }; }
-  ConstIterator cend() const { return ConstIterator{ tail.get() }; }
+  ConstIterator cbegin() const { return ConstIterator{ tail }; }
+  ConstIterator cend() const { return ConstIterator{ head }; }
   ConstIterator ctop() const { return ConstIterator{ root.get() }; }
 
   ///@}
@@ -156,9 +165,16 @@ public:
 
   void insert ( const T key, const U value, const bool substitute ) {
 
-    if ( root ) root->insert( key, value, substitute );
-
-    else root.reset( new Node{ key, value } );
+    if ( root ) {
+      root->insert( key, value, substitute );
+      if ( key < tail->key() ) tail = tail->left.get();
+      if ( key > head->key() ) head = head->right.get();
+    }
+    else {
+      root.reset( new Node{ key, value } );
+      tail = root.get();
+      head = root.get();
+    }
 
   }
 
@@ -174,12 +190,22 @@ public:
 }; // end of class Tree
 
 template < class ot, class ou >
-  std::ostream& operator<< (std::ostream& os, const Tree< ot, ou >& t) {
+std::ostream& operator<< (std::ostream& os, Tree< ot, ou >& t) {
 
-  if ( t.top() )
-    return ( os << t.end() );
-  else
-    return ( os << " Empty tree " );
+  Iterator< ot, ou > it = t.begin();
+  while ( it != t.end() ) {
+    os << it->key() << ":\t" << it->value() << "\n";
+    ++it;
+  }
+
+  os << it->key() << ":\t" << it->value();
+
+  return os;
+
+  // if ( t.top() )
+  //   return ( os << t.end() );
+  // else
+  //   return ( os << " Empty tree " );
 }
 
 // ===========================================================================

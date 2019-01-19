@@ -146,16 +146,16 @@ struct Node {
 }; // end of class Node
 
 
-template < class T, class U >
-  std::ostream& operator<< (std::ostream& os, const Node< T,U >& n) {
+/* template < class T, class U > */
+/*   std::ostream& operator<< (std::ostream& os, const Node< T,U >& n) { */
 
-  if ( n.parent ) {
-    os << n.key() << ":\t" << n.value() << "\n";
-    return ( os << *( n.parent ) );
-  }
+/*   if ( n.parent ) { */
+/*     os << n.key() << ":\t" << n.value() << "\n"; */
+/*     return ( os << *( n.parent ) ); */
+/*   } */
   
-  return ( os << n.key() << ":\t" << n.value() );
+/*   return ( os << n.key() << ":\t" << n.value() ); */
   
-}
+/* } */
 
 #endif //__NODE__
