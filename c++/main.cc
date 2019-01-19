@@ -51,7 +51,7 @@ int main( /* int argc, char * argv[] */ ) {
   // delete [] nnn;
     
 
-  std::cout << T[5] << std::endl;
+  // std::cout << T[5] << std::endl;
 
   T.clear();
 

@@ -15,7 +15,6 @@
 #define __TREE__
 #include <iostream>
 #include <memory>
-#include <BST_utility.h>
 #include <Node.h>
 #include <Iterator.h>
 
@@ -209,7 +208,7 @@ public:
   }
 
  
-  U& operator[](const T key) {
+  U& operator[]( const T key ) {
 
     Iterator n = find(key, top());
     if (n == end())
@@ -217,7 +216,7 @@ public:
     return n->value();
   }
 
-  const U& operator[](const T key) const {
+  const U& operator[]( const T key ) const {
     return this->operator[]( key );
   }
 
@@ -227,8 +226,8 @@ public:
 }; // end of class Tree
 
 template < class ot, class ou >
-std::ostream& operator<< (std::ostream& os, Tree< ot, ou >& t) {
-
+  std::ostream& operator<< (std::ostream& os, Tree< ot, ou >& t) {
+  
   Iterator< ot, ou > it = t.begin();
   Iterator< ot, ou > stop { t.head };
   while ( it != stop ) {

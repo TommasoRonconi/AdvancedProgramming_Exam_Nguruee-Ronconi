@@ -62,7 +62,7 @@ $(exe_name): $(OBJs)
 
 main.o: $(dirL)/*.o
 
-$(dirL)/Tree.o: $(dirI)/Node.h $(dirI)/Iterator.h $(dirI)/BST_utility.h
+$(dirL)/Tree.o: $(dirI)/Node.h $(dirI)/Iterator.h
 
 # $(dirL)/Iterator.o: $(dirI)/Node.h  $(dirI)/BST_utility.h
 

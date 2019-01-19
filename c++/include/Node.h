@@ -3,7 +3,6 @@
 
 #include <memory>
 #include <utility>
-#include <BST_utility.h>
 
 template< class T, class U >
 struct Node {
@@ -87,21 +86,6 @@ struct Node {
 
 
   /**
-   *  @brief get the pointer corresponding to bst::direction
-   *  
-   *  @param dir the direction to take
-   *
-   *  @return pointer to child in the given direction
-   */
-  // std::unique_ptr<Node> get_direction ( bst::direction dir ) {
-      
-  //   if ( dir == bst::direction::left ) return std::move( left );
-  //   else return std::move( right );
-      
-  // }    
-
-
-  /**
    *  @brief 
    *
    *  @param insert reference to unique_ptr to Node
@@ -151,8 +135,7 @@ struct Node {
       right->clear();
       right.reset();
     }
-
-    std::cout << "ehi (" << content.first << ", " << content.second << ")" << std::endl;
+    
   }
 
 
