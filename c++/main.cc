@@ -56,6 +56,11 @@ int main( /* int argc, char * argv[] */ ) {
   T.insert( 5, 9.5, sub );
 
   std::cout << T << std::endl;
+
+  // std::cout << T.find( 7, T.top() )->key() << std::endl;
+
+
+
   // it++;
   // std::cout << ( it )->key() << std::endl;
 

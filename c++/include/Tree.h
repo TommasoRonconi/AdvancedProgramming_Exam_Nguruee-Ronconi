@@ -90,7 +90,7 @@ public:
 
   /// operator<< overload
   template < class ot, class ou >
-    friend std::ostream& operator<< ( std::ostream&, const Tree< ot, ou >& );
+    friend std::ostream& operator<< ( std::ostream&, Tree< ot, ou >& );
 
   /// operator[] overload, constant version
   // template < class ot, class ou >
@@ -148,11 +148,11 @@ public:
   // class Iterator;
   // class ConstIterator;
   Iterator begin() { return Iterator{ tail }; }
-  Iterator end() { return Iterator{ head }; }
+  Iterator end() { return Iterator{ nullptr }; }
   Iterator top() { return Iterator{ root.get() }; }
 
   ConstIterator cbegin() const { return ConstIterator{ tail }; }
-  ConstIterator cend() const { return ConstIterator{ head }; }
+  ConstIterator cend() const { return ConstIterator{ nullptr }; }
   ConstIterator ctop() const { return ConstIterator{ root.get() }; }
 
   ///@}
@@ -178,29 +178,32 @@ public:
 
   }
 
-  void clear ();
+  void clear () {
+
+  }
 
   void balance ();
 
-  Iterator find ( const T key, Iterator it = top() ){
+  Iterator find ( const T key, Iterator it ){
+  // Iterator find ( const T key, Iterator it = this->top() ){
 
-    if(key == it->key())
+    if ( key == it->key() )
       return it;
 
     if ( key < it->key() && ( it->left ) )
-      return find( key, Iterator( it->left ) );
+      return find( key, Iterator( it->left.get() ) );
 
     if ( key < it->key() && !( it->left ))
       return end();
 
     if ( key > it->key() && (it->right))
-      return find( key, Iterator( it->right ) );
+      return find( key, Iterator( it->right.get() ) );
 
     if ( key > it->key() && !(it->right))
       return end();
-      
 
-
+    return end();
+    
   }
 
 
@@ -216,7 +219,8 @@ template < class ot, class ou >
 std::ostream& operator<< (std::ostream& os, Tree< ot, ou >& t) {
 
   Iterator< ot, ou > it = t.begin();
-  while ( it != t.end() ) {
+  Iterator< ot, ou > stop { t.head };
+  while ( it != stop ) {
     os << it->key() << ":\t" << it->value() << "\n";
     ++it;
   }
@@ -224,11 +228,7 @@ std::ostream& operator<< (std::ostream& os, Tree< ot, ou >& t) {
   os << it->key() << ":\t" << it->value();
 
   return os;
-
-  // if ( t.top() )
-  //   return ( os << t.end() );
-  // else
-  //   return ( os << " Empty tree " );
+  
 }
 
 // ===========================================================================
