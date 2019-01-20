@@ -1,22 +1,46 @@
+/**
+ *  @file include/Node.h
+ *
+ *  @brief The class Node
+ *
+ *  This file defines the interface of the class Node
+ *
+ *  @author Herbert Nguruwe, Tommaso Ronconi
+ *
+ *  @author hknguruwe@gmail.com, tronconi@sissa.it
+ */
+
+
 #ifndef __NODE__
 #define __NODE__
 
 #include <memory>
 #include <utility>
 
+
+/**
+ *  @class Node Node.h "include/Node.h"
+ *
+ *  @brief The class Node
+ *
+ *  This class is used to handle objects of type <EM> Node
+ *  </EM>. It is templated on two types T and U for the  
+ *  <EM> key </EM> and <EM> value </EM> retained by the Node, respectively.
+ */
 template< class T, class U >
 struct Node {
 
-  /// Content of the node
+  /// Content of the node, a std::pair templated on the key (first
+  /// argument of pair) and value (second argument of std::pair) types
   std::pair< T, U > content;
     
-  /// Pointer to parent Node
+  /// Raw pointer to parent Node
   Node * parent = nullptr;
 
-  /// Pointer to left Node
+  /// Pointer to left Node (std::unique_ptr)
   std::unique_ptr<Node> left = nullptr;
 
-  /// Pointer to right Node
+  /// Pointer to right Node (std::unique_ptr)
   std::unique_ptr<Node> right = nullptr;
 
   /**
@@ -27,7 +51,16 @@ struct Node {
   /// default constructor
   Node () : content{ std::pair<T, U>{} }, parent{ nullptr } {}
 
-  /// constructor that takes a key and a value as the input
+  /**
+   *  @brief Constructor that builds a new Node setting the content and position wrt parent
+   *
+   *  @param key the key of the Node
+   *
+   *  @param value the value contained in the Node
+   *
+   *  @param par parent Node to which the Node is attached (default = nullptr)
+   */
+  /// constructor that takes
   Node ( T key, U value, Node * par = nullptr )
     : content{ std::pair<T,U>( key, value ) }, parent{ par } {}
 
@@ -67,11 +100,8 @@ struct Node {
   // ==================================================
   
 
+  /// default destructor of Node
   ~Node() = default;
-
-  /// operator<< overload
-  template < class ot, class ou >
-    friend std::ostream& operator<< ( std::ostream&, const Node< ot, ou >& n );
 
   ///@}
 
@@ -80,32 +110,51 @@ struct Node {
    */
   ///@{
 
+  /// returns the key of the Node
   T key() const { return content.first; }
 
+  /// returns the value of the Node
   U value() const { return content.second; }
 
 
   /**
-   *  @brief 
+   *  @brief Recursive function to insert a new Node lower in hierarchy with respect
+   *         to current Node. If Node has no childs it inserts the new one as the 
+   *         correct new child, otherwise calls itself again from the right child of
+   *         current Node.
    *
-   *  @param insert reference to unique_ptr to Node
+   *  @param key key of the new Node to be generated
    *  
-   *  @param k for key, v for value and sub boolean to replace key if exists
+   *  @param value value of the new Node to be generated
    *
-   *  @return  void
+   *  @param substitute whether to substitute or not the value if a Node with same 
+   *                    key  exists
+   *
+   *  @return void
    */
   void insert ( const T key, const U value, const bool substitute = false );
 
+  /**
+   *  @brief Recursive function to find the leftmost Node in hierarchy from current
+   *
+   *  @return Raw pointer to leftmost Node, if current has no left child returns <b>this</b>
+   */
   Node * leftmost () {
 
-   
     if ( left )
       return left->leftmost();
     else
       return this;
-    
+   
   }
 
+  /**
+   *  @brief Recursive function for removing all nodes lower in hierarchy than current.
+   *         If current has left/right child calls itself again from left/right 
+   *         than resets left/right.
+   *
+   *  @return void
+   */
   void clear () {
 
     if ( left ) {
