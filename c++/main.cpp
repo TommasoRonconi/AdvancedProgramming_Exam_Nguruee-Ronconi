@@ -1,7 +1,7 @@
 #include <Tree.h>
 #include <memory>
 
-int main( ) {
+void make_some_tests () {
 
   Tree< int, double > T {};
   
@@ -39,6 +39,27 @@ int main( ) {
   T.clear();
   if ( ! T.top().operator->() )
     std::cout << "\n!! --------- Done all clear --------- !!\n" << std::endl;
+
+  return;
+
+}
+
+int main( ) {
+
+  // uncomment to make some tests:
+  // make_some_tests();
+
+  int key;
+  double value;
+  bool substitute = true;
+  Tree< int, double > T {};
+
+  while ( std::cin >> key >> value )
+    T.insert( key, value, substitute );
+
+  std::cout << T << std::endl;
+  Tree< int, double >::Iterator it = T.top();
+  // std::cout << it->key() << "\t" << it->value() << std::endl;
   
   return 0;
   

@@ -1,4 +1,3 @@
-# ./random.sh -m 100000 -n 50 | awk ' { print FNR, $1/1000. }' > ordered_int-random_double.dat
 1 26.892
 2 8.863
 3 5.039
