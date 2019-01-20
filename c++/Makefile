@@ -32,7 +32,7 @@ LDFLAGS = -Wl,-rpath,$(dirL)
 
 # objects
 
-OBJs = $(dirL)/Tree.o main.o # $(dirL)/Node.o $(dirL)/Iterator.o 
+OBJs = main.o $(dirL)/Tree.o $(dirL)/Node.o $(dirL)/Iterator.o 
 
 #################################################################
 # Rules:
@@ -60,13 +60,13 @@ $(exe_name): $(OBJs)
 
 # pre-requisites
 
-main.o: $(dirL)/*.o
+main.o: $(dirI)/Tree.h $(dirI)/Node.h $(dirI)/Iterator.h
 
-$(dirL)/Tree.o: $(dirI)/Node.h $(dirI)/Iterator.h
+$(dirL)/Tree.o: $(dirI)/Tree.h $(dirI)/Node.h $(dirI)/Iterator.h
 
-# $(dirL)/Iterator.o: $(dirI)/Node.h  $(dirI)/BST_utility.h
+$(dirL)/Iterator.o: $(dirI)/Node.h $(dirI)/Iterator.h
 
-# $(dirL)/Node.o: $(dirI)/BST_utility.h
+$(dirL)/Node.o: $(dirI)/Node.h
 
 # cleaning rule and co.
 
