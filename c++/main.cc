@@ -1,115 +1,44 @@
 #include <Tree.h>
 #include <memory>
 
-int main( /* int argc, char * argv[] */ ) {
+int main( ) {
 
-  // ================================================================================================
-  // =========================================== test Node ==========================================
-  // ================================================================================================
-  // Working tests:
-  // Node< int, double > N { 4, 5.1 };
-  // std::cout << N.key() << "  " << N.value() << std::endl;
-  // N.insert( 3, 6.2, true );
-  // std::cout << N.left->key() << "  " << N.left->value() << std::endl;
-  // std::cout << N.left->parent->key() << "  " << N.left->parent->value() << std::endl;
-  // N.left->insert( 2, 7.3, true );
-  // std::cout << N.left->right->key() << "  " << N.left->right->value() << std::endl;
-  // std::cout << N.left->right->parent->key() << "  " << N.left->right->parent->value() << std::endl;
-  // ================================================================================================
-  // Still not working (probably copy constructor needed (or kindof))
-  // std::cout << N.leftmost()->key() << "  " << N.leftmost()->value() << std::endl;
-  // Node< int, double > * N2 = N.leftmost();
-  // std::cout << N2->key() << "  " << N2->value() << std::endl;
-  // ================================================================================================
-  
   Tree< int, double > T {};
-  int key = 4;
-  double value = 5.1;
-  bool sub = true;
-  T.insert( key, value, sub );
   
+  bool sub = true;
   T.insert( 2, 7.3, sub );
   T.insert( 3, 6.2, sub );
   T.insert( 1, 8.4, sub );
   T.insert( 6, 12., sub );
+  T.insert( 4, 5.1, sub );
   T.insert( 5, 9.5, sub );
   T.insert( 7, 1.1, sub );
+  T.insert( 8, 9.5, sub );
+  T.insert( 9, 1.1, sub );
+  T.insert( 10, 9.5, sub );
+  T.insert( 11, 1.1, sub );
+  T.insert( 12, 9.5, sub );
+  T.insert( 13, 1.1, sub );
+  T.insert( 14, 9.5, sub );
+  T.insert( 15, 1.1, sub );
 
+  std::cout << "\n!! --- Ordered tree before balance --- !!\n" << std::endl;
   std::cout << T << std::endl;
 
-  // T.clear( T.begin() );
-  // std::cout << T.find( 7, T.top() )->key() << std::endl;
-  // Tree< int, double >::Iterator it = T.begin();
-  // std::cout << it->value() << std::endl;
-  // Tree< int, double >::Iterator it2;
-  // it2 = it;
-  // std::cout << it2->value() << std::endl;
-  // T.clear( T.begin() );
-
-  // Node< int, double > * nnn = it.operator->();
-  // std::cout << nnn->key() << std::endl;
-  // delete [] nnn;
-    
-
-  // std::cout << T[5] << std::endl;
+  T.balance();
+  std::cout << "\n!! --- Ordered tree after balance --- !!\n" << std::endl;
+  std::cout << T << std::endl;
+  
+  Tree< int, double >::Iterator it = T.top();
+  std::cout << "\n!! ---- Check if they correspond ---- !!\n" << std::endl;
+  std::cout << "should be 5: " << it->left->right->left->key() << std::endl;
+  std::cout << "should be 9: " << it->right->left->left->key() << std::endl;
+  std::cout << "should be 7.3: " << T.find( 2, it )->value() << std::endl;
+  std::cout << "should be 9.5: " << T.find( 5, it )->value() << std::endl;
 
   T.clear();
-
-  // it++;
-  // std::cout << ( it )->key() << std::endl;
-
-  //std::cout << it->leftmost()->key() << std::endl;
-    
-  // T.insert( 2, 7.3, sub );
-  // Tree< int, double >::Iterator  it = T.top();
-
-  // std::cout << it->left->key() << std::endl;
-  // auto NN = it->leftmost();
-  // std::cout << NN->key() << std::endl;
-  // if ( it->left )
-  //   std::cout << "check" << std::endl;
-  
-  // std::cout << *( T.top()->leftmost() ) << "  " << *( T.top()->leftmost() ) << std::endl;
-
-  // Node< int, double> N1 { 4, 2.5 };
-  // std::cout << N1.key() << "  " << N1.value() << std::endl;
-  // if ( N1.left )
-  //   std::cout << "not null\n";
-  // else
-  //   std::cout << "null\n";
-
-  // Node< int, double > NL { 3, 4.6 };
-  // N1.left = std::make_unique< Node< int, double > >(  3, 4.6  );
-
-  // auto N3 = N1.get_direction( bst::direction::left );
-  // std::cout << N3->key() << "  " << N3->value() << std::endl;
-
-  // std::unique_ptr< Node< int, double > > N4 { new Node< int, double > { 5, 5.1 } };
-  // N1.new_node( N4, bst::direction::right );
-  // if ( N1.right ) 
-  //   std::cout << N1.right->key() << "  " << N1.right->value() << std::endl;
-  // auto N5 = std::make_unique< Node< int, double > >(  N1  );
-  
-
-  // ============================================================
-  // std::pair< int, double > p1 {2, 4.};
-  // auto p2 { p1 };
-  // std::cout << p1.first << "  " << p2.first << std::endl;
-  // std::cout << p1.second << "  " << p2.second << std::endl;
-  // ============================================================
-
-  // Tree< int, double >::Node N1;
-  // if ( N1->parent )
-  //   std::cout << "Blabla\n";
-
-  
-  // Tree< int, double > T1;
-  // std::cout << *(T1.begin()) << std::endl;
-  // auto it = T1.begin();
-  // if (!it->)
-  //   std::cout << "nullptr!\n";
-  
-  /* code */
+  if ( ! T.top().operator->() )
+    std::cout << "\n!! --------- Done all clear --------- !!\n" << std::endl;
   
   return 0;
   
