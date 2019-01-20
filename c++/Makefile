@@ -81,4 +81,4 @@ SUFFIXES =
 
 clean:
 	$(info clean up)
-	rm -f $(exe_name) main.o $(OBJ) *~ *# $(dirT)/*~ $(dirI)/*~ $(dirD)/*~ $(dirD)/html $(dirD)/latex 
+	rm -f $(exe_name) main.o $(OBJ) *~ *# $(dirT)/*~ $(dirI)/*~ $(dirD)/*~ $(dirD)/html $(dirD)/latex $(PWD)/input/*~
