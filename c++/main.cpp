@@ -59,7 +59,8 @@ int main( ) {
 
   std::cout << T << std::endl;
   Tree< int, double >::Iterator it = T.top();
-  // std::cout << it->key() << "\t" << it->value() << std::endl;
+
+  T.clear();
   
   return 0;
   
