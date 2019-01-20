@@ -27,7 +27,7 @@ Class PostcardList must manage the sorting of dates/senders/receivers. Note that
  - getPostcardsBySender(self, sender): returns the postcards from a sender
  - getPostcardsByReceiver(self, receiver): returns the postcards to a receiver
 '''
-
+__all__ = ['PostcardList']
 import unittest
 import datetime  # use this module to deal with dates:  https://docs.python.org/3/library/datetime.html
 
@@ -40,7 +40,7 @@ class PostcardList:
 
 ########################
 # TO COMMENT 
-from exam_solution import PostcardList # overrides the class define above
+from exam_solution.PostcardList import PostcardList # overrides the class define above
 ########################
 
 
