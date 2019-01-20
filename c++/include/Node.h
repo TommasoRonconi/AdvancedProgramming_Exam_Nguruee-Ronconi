@@ -94,25 +94,7 @@ struct Node {
    *
    *  @return  void
    */
-  void insert ( const T key, const U value, const bool substitute = false ) {
-      
-    if ( substitute && key == content.first ) content.second = value;
-      
-    if( key < content.first ) {
-      if( left ) 
-	left->insert( key, value, substitute );
-      else
-	left.reset( new Node { key, value, this } );
-    }
-
-    if ( key > content.first ) {
-      if ( right ) 
-	right->insert( key, value, substitute );
-      else 
-	right.reset( new Node{ key, value, parent } );	
-    }
-      
-  }
+  void insert ( const T key, const U value, const bool substitute = false );
 
   Node * leftmost () {
 
@@ -143,17 +125,6 @@ struct Node {
     
 }; // end of class Node
 
-
-/* template < class T, class U > */
-/*   std::ostream& operator<< (std::ostream& os, const Node< T,U >& n) { */
-
-/*   if ( n.parent ) { */
-/*     os << n.key() << ":\t" << n.value() << "\n"; */
-/*     return ( os << *( n.parent ) ); */
-/*   } */
-  
-/*   return ( os << n.key() << ":\t" << n.value() ); */
-  
-/* } */
+#include <Node.tpp>
 
 #endif //__NODE__
