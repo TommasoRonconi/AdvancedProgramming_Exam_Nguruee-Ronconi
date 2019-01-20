@@ -1,5 +1,8 @@
 #include <Tree.h>
 #include <memory>
+#include <map>
+#include <chrono>
+typedef std::chrono::high_resolution_clock Clock;
 
 void make_some_tests () {
 
@@ -46,21 +49,70 @@ void make_some_tests () {
 
 int main( ) {
 
-  // uncomment to make some tests:
+  // uncomment to run some tests:
   // make_some_tests();
 
+  // allocate an object of class Tree
+  Tree< int, double > myT;
+
+  // allocate an object of class std::map
+  std::map< int, double > myM;
+
+  // insert elements into the two allocated objects
+  // (pairs 'key-value' are read from stdin)
   int key;
   double value;
-  bool substitute = true;
-  Tree< int, double > T {};
+  while ( std::cin >> key >> value ) {
+    myT.insert( key, value );
+    myM.insert( std::pair< int, double >( key, value ) );
+  }
+  std::cout << myT << std::endl;
+  std::cout << "ROOT: " << myT.top()->key() << std::endl;  
 
-  while ( std::cin >> key >> value )
-    T.insert( key, value, substitute );
+  // find some values within the Tree:
+  // (measuring performance)
+  auto myT_time_start = Clock::now();
+  myT.find( 42, myT.top() );  // not present
+  myT.find( 145, myT.top() ); // present (close to root)
+  myT.find( 304, myT.top() ); // present
+  myT.find( 322, myT.top() ); // present (head)
+  myT.find( 1, myT.top() );   // not present
+  myT.find( 6, myT.top() );   // present
+  auto myT_time_end = Clock::now();
+  double myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
+  std::cout << "Time spent (Tree): " << myT_time << std::endl;
 
-  std::cout << T << std::endl;
-  Tree< int, double >::Iterator it = T.top();
+  // find some values within the Tree:
+  // (measuring performance)
+  myT.balance();
+  myT_time_start = Clock::now();
+  myT.find( 42, myT.top() );  // not present
+  myT.find( 145, myT.top() ); // present (close to root)
+  myT.find( 304, myT.top() ); // present
+  myT.find( 322, myT.top() ); // present (head)
+  myT.find( 1, myT.top() );   // not present
+  myT.find( 6, myT.top() );   // present
+  myT_time_end = Clock::now();
+  myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
+  std::cout << "Time spent (balanced Tree): " << myT_time << std::endl;
 
-  T.clear();
+  // find same values within the map:
+  // (measuring performance)
+  auto myM_time_start = Clock::now();
+  myT.find( 42, myT.top() );  // not present
+  myT.find( 145, myT.top() ); // present (close to root)
+  myT.find( 304, myT.top() ); // present
+  myT.find( 322, myT.top() ); // present (head)
+  myT.find( 1, myT.top() );   // not present
+  myT.find( 6, myT.top() );   // present
+  auto myM_time_end = Clock::now();
+  double myM_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myM_time_end - myM_time_start).count();
+  std::cout << "Time spent (std::map): " << myM_time << std::endl;
+
+  
+  Tree< int, double >::Iterator it = myT.top();
+
+  myT.clear();
   
   return 0;
   

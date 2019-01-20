@@ -77,8 +77,12 @@ SUFFIXES =
 #################################################################
 # phony rules
 
-.PHONY: clean documentation
+.PHONY: clean documentation clean_doc
 
 clean:
 	$(info clean up)
-	rm -rf $(exe_name) main.o $(OBJ) *~ *# $(dirT)/*~ $(dirI)/*~ $(dirD)/*~ $(dirD)/html $(dirD)/latex $(PWD)/input/*~
+	rm -rf $(exe_name) main.o $(OBJ) *~ *# $(dirT)/*~ $(dirI)/*~ $(dirD)/*~ $(PWD)/input/*~
+
+clean_doc:
+	$(info clean doc)
+	rm -rf  $(dirD)/*~ $(dirD)/html $(dirD)/latex
