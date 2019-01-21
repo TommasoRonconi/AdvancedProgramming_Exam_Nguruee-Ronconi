@@ -1,9 +1,12 @@
 #################################################################
 # Pre-processor options (uncomment for adding)
 
-# if uncommented activates push-back option
-# leave it commented to use default push-front option
-#OPT += -DPUSH_BACK
+# if uncommented runs basic tests
+# OPT += -DTEST
+
+# if uncommented compares performance with std::map
+# ( note that couples key-value are taken from stdin )
+# OPT += -DPERFORMANCE
 
 #################################################################
 # Flags and variables
