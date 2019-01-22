@@ -69,14 +69,9 @@ void compare_with_map () {
   // (measuring performance)
   auto myT_time_start = Clock::now();
   myT.find( 42, myT.top() );  // not present
-  // myT.find( 145, myT.top() ); // present (close to root)
-  // myT.find( 304, myT.top() ); // present
-  // myT.find( 322, myT.top() ); // present (head)
-  // myT.find( 1, myT.top() );   // not present
-  // myT.find( 6, myT.top() );   // present
   auto myT_time_end = Clock::now();
   double myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
-  //std::cout << "Time spent (Tree): " << myT_time << std::endl;
+  // std::cout << "Time spent (Tree): " << myT_time << std::endl;
   std::cout << myT_time << "\t";
 
   // find some values within the Tree:
@@ -84,28 +79,18 @@ void compare_with_map () {
   myT.balance();
   myT_time_start = Clock::now();
   myT.find( 42, myT.top() );  // not present
-  // myT.find( 145, myT.top() ); // present (close to root)
-  // myT.find( 304, myT.top() ); // present
-  // myT.find( 322, myT.top() ); // present (head)
-  // myT.find( 1, myT.top() );   // not present
-  // myT.find( 6, myT.top() );   // present
   myT_time_end = Clock::now();
   myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
-  //std::cout << "Time spent (balanced Tree): " << myT_time << std::endl;
+  // std::cout << "Time spent (balanced Tree): " << myT_time << std::endl;
   std::cout << myT_time << "\t";
 
   // find same values within the map:
   // (measuring performance)
   auto myM_time_start = Clock::now();
   myT.find( 42, myT.top() );  // not present
-  // myT.find( 145, myT.top() ); // present (close to root)
-  // myT.find( 304, myT.top() ); // present
-  // myT.find( 322, myT.top() ); // present (head)
-  // myT.find( 1, myT.top() );   // not present
-  // myT.find( 6, myT.top() );   // present
   auto myM_time_end = Clock::now();
   double myM_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myM_time_end - myM_time_start).count();
-  //std::cout << "Time spent (std::map): " << myM_time << std::endl;
+  // std::cout << "Time spent (std::map): " << myM_time << std::endl;
   std::cout << myM_time << std::endl;
 
   myT.clear();
@@ -114,7 +99,7 @@ void compare_with_map () {
   
 }
 
-int main() {
+int main() {  
 
   // run some tests:
 #ifdef TEST

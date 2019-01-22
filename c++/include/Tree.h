@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 #include <Node.h>
 #include <Iterator.h>
 
@@ -81,7 +82,8 @@ class Tree {
    *
    *  @return void
    */
-  void kernel_balance ( Tree& Tnew, Iterator< T, U > startpoint, size_t steps, Iterator< T, U > endpoint ); 
+  void kernel_balance ( Iterator< T, U > here, const std::vector<Node*> nodes ); 
+  // void kernel_balance ( Tree& Tnew, Iterator< T, U > startpoint, size_t steps, Iterator< T, U > endpoint ); 
 
   ///@}
   

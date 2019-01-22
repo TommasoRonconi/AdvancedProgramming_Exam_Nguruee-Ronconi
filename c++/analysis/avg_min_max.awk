@@ -23,5 +23,5 @@ BEGIN {
     if ( $3 > max_tM ) max_tM=$3;
 }
 END {
-    print run, "\t", min_tTu, "\t", avg_tTu/count, "\t", max_tTu, "\t", min_tTo, "\t", avg_tTo/count, "\t", max_tTo, "\t", min_tM, "\t", avg_tM/count, "\t", max_tM    
+    print run, "\t\t", min_tTu, "\t", avg_tTu/count, "\t", max_tTu, "\t", min_tTo, "\t", avg_tTo/count, "\t", max_tTo, "\t", min_tM, "\t", avg_tM/count, "\t", max_tM    
 }
