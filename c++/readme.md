@@ -43,3 +43,9 @@ The complete documentation of the public functions implemented can be generated 
 make documentation
 ```
 The index file is put in folder `Doxygen/html/index.html`.
+
+### Performance measurements
+
+| ![](output/plot_ordered.png)         | ![](output/plot_random.png)         |
+| ------------------------------------ | ----------------------------------- |
+| [full-size](output/plot_ordered.png) | [full-size](output/plot_random.png) |
