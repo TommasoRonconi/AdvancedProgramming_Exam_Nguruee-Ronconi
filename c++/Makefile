@@ -24,7 +24,7 @@ exe_name = tree.x
 # flags for debugging and optimization
 # (these are the flags I might want to change)
 
-FLAGS = -std=c++14 -Wall -Wextra -g -O0
+FLAGS = -std=c++14 -Wall -Wextra -g -O3
 
 # flags for the compiler
 
