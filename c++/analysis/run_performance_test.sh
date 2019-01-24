@@ -2,7 +2,7 @@
 
 #PBS -q regular
 #PBS -l nodes=1:ppn=20
-#PBS -l walltime=03:00:00
+#PBS -l walltime=01:00:00
 #PBS -o /home/tronconi/MHPC/AdvancedProgramming_Exam_Nguruee-Ronconi/c++/analysis/perf.out
 #PBS -e /home/tronconi/MHPC/AdvancedProgramming_Exam_Nguruee-Ronconi/c++/analysis/perf.err
 
