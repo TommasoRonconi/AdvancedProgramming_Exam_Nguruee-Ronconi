@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 #include <Node.h>
 #include <Iterator.h>
 
@@ -81,7 +82,8 @@ class Tree {
    *
    *  @return void
    */
-  void kernel_balance ( Tree& Tnew, Iterator< T, U > startpoint, size_t steps, Iterator< T, U > endpoint ); 
+  void kernel_balance ( Iterator< T, U > here, const std::vector<Node*> nodes ); 
+  // void kernel_balance ( Tree& Tnew, Iterator< T, U > startpoint, size_t steps, Iterator< T, U > endpoint ); 
 
   ///@}
   
@@ -123,16 +125,37 @@ public:
 
 
   /// default constructor
-  Tree() = default;
-  // Tree () { std::cout << "default ctor\n"; }
+  Tree () = default;
+  
+  /// Copy-constructor builds new Tree by deep-coping argument Tree 
+  Tree ( const Tree & T_other );
 
-  // default copy semantic is fine
-  Tree(const Tree&) = default;
-  Tree& operator=(const Tree&) = default;
+  /// Copy-assignment operator overload, assign to existing Tree
+  /// a deep copy of some other Tree
+  Tree& operator= ( const Tree & T_other ) {
+
+    this->clear();
+    auto tmp = T_other;
+    (*this) = std::move( tmp );
+
+    return *this;
+    
+  }
 
   // move semantic is fine as well
-  Tree(Tree&&) = default;
-  Tree& operator=(Tree&&) = default;
+  Tree ( Tree&& T_other ) : root{ std::move( T_other.root ) },
+			    tail{ std::move( T_other.tail ) },
+			    head{ std::move( T_other.head ) } {}
+  
+  Tree& operator= ( Tree&& T_other ) {
+
+    root = std::move( T_other.root );
+    head = std::move( T_other.head );
+    tail = std::move( T_other.tail );
+
+    return *this;
+
+  }
 
   // default denstructor
   ~Tree() noexcept = default;
@@ -183,7 +206,7 @@ public:
    *
    *  @return void
    */
-  void insert ( const T key, const U value, const bool substitute );
+  void insert ( const T key, const U value, const bool substitute = false );
 
   /**
    *  @brief Function to remove all Nodes from Tree. 
@@ -193,7 +216,9 @@ public:
    */
   void clear () {
 
-    root->clear();
+    if ( root ) 
+      root->clear();
+    
     root.reset();
     
   }

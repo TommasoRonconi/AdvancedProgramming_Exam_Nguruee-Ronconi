@@ -1,9 +1,12 @@
 #################################################################
 # Pre-processor options (uncomment for adding)
 
-# if uncommented activates push-back option
-# leave it commented to use default push-front option
-#OPT += -DPUSH_BACK
+# if uncommented runs basic tests
+# OPT += -DTEST
+
+# if uncommented compares performance with std::map
+# ( note that couples key-value are taken from stdin )
+# OPT += -DPERFORMANCE
 
 #################################################################
 # Flags and variables
@@ -77,8 +80,12 @@ SUFFIXES =
 #################################################################
 # phony rules
 
-.PHONY: clean documentation
+.PHONY: clean documentation clean_doc
 
 clean:
 	$(info clean up)
-	rm -rf $(exe_name) main.o $(OBJ) *~ *# $(dirT)/*~ $(dirI)/*~ $(dirD)/*~ $(dirD)/html $(dirD)/latex $(PWD)/input/*~
+	rm -rf $(exe_name) main.o $(OBJ) *~ *# $(dirT)/*~ $(dirI)/*~ $(dirD)/*~ $(PWD)/input/*~
+
+clean_doc:
+	$(info clean doc)
+	rm -rf  $(dirD)/*~ $(dirD)/html $(dirD)/latex

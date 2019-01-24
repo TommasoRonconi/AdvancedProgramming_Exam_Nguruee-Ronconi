@@ -66,10 +66,12 @@ public:
    */
   Iterator& operator++() {
 
-    if ( current->right )
-      current = current->right->leftmost() ;
-    else
-      current = current->parent;
+    if ( current ) {
+      if ( current->right )
+	current = current->right->leftmost() ;
+      else
+	current = current->parent;
+    }
       
     return *this;
     
