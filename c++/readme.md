@@ -23,7 +23,7 @@ make OPT+=-DPERFORMANCE
 ```
 a version of the application for testing the performances of the `find` function is compiled.
 It takes `(int)KEY (double)VALUE` couples from `stdin` and inserts them into an object of our `class Tree` and into an object of type `std::map`.
-It then measures the time necessary for searching the number 42.
+It then measures the time necessary for searching a set of 100 random integers contained in the file [bunch_of_random_keys.dat](input/bunch_of_random_keys.dat).
 The search is done
 - on the unbalanced tree;
 - on the tree balanced by means of the public function `balance` of the class;
