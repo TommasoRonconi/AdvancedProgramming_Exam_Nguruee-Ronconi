@@ -97,13 +97,39 @@ This class is derived from `Iterator`, it simply defines the `const` counterpart
 ### `class Tree` (finally)
 
 **Private variables**:
-- 
+- `std::unique_ptr<Node> root` stores a unique pointer to the higher node in the hierarchy;
+- `Node * head` stores a raw pointer to the node with the largest key;
+- `Node * tail` stores a raw pointer to the node with the smallest key.
 
+**Private functions**:
+- `void kernel_balance( Iterator< T, U > here, const std::vector<Node*> nodes ))`, this is a recursive function called by the public function `balance()`. It takes an iterator to a position in the tree and a vector of nodes which has yet to be balanced. The algorithm finds the mid-point node and sets it in the `here`, then takes the left half and an iterator to the left child of `here` and calls itself again. If the left half is empty it sets the left child of `here` as `nullptr. Same is done for right.
 
+**Friends of the class**:
+- `std::ostream& operator<< ( std::ostream&, Tree< ot, ou >& )` templated on the two types `ot` and `ou`, overloads the operator put-to, defined in file [Tree.tpp](tpl/Tree.tpp).
 
+**Con/Destructors**:
+- `default` ctor and dtor;
+- `Tree ( const Tree & T_other )` and `Tree& operator= ( const Tree & T_other )`, copy constructor and copy-assignment operator;
+- `Tree ( Tree&& T_other )` and `Tree& operator= ( Tree&& T_other )`, move constructor and move assignment operator;
+
+**Iterators**:
+- `begin()` and `cbegin()`, Iterator and ConstIterator storing the position of `tail`;
+- `end()` and `cend()`, Iterator and ConstIterator storing the end of the Tree, for us a `nullptr` so that when iterating over the nodes from tail via the operator pre(post)-increment, we can easily find the point when the tree ends (aka the *oldest* parent);
+- `top` and `ctop`, Iterator and ConstIterator storing the position of `root`;
+
+**Public functions**:
+- `void insert ( const T key, const U value, const bool substitute = false )`, inserts a new value in the tree, it calls the recursive function `Node::insert()` from `root`;
+- `void clear ()`, clears the tree, this calls the recursive function `Node::clear()` of root, but to erase the tree it would have been possible to simply reset the value of `root`;
+- `void balance ()`, function used to balance the tree, it first builds an ordered `std::vector<*Node>` from tail to head of the tree and then calls the recursive function `kernel_balance` with `Iterator{root}` and said vector of pointers to node as arguments;
+- `Iterator find ( const T key, Iterator it )`, recursive function used to find a value in the tree, it starts comparing the provided key with that of root and, dependingly on the result of the comparison it calls itself again from left or right until it finds a child pointing to nullpointer.
 
 ## Performance measurements
 
 | ![](output/plot_ordered.png)         | ![](output/plot_random.png)         |
 | ------------------------------------ | ----------------------------------- |
 | [full-size](output/plot_ordered.png) | [full-size](output/plot_random.png) |
+
+We also measured the time needed for balancing the tree in the worst case scenario (i.e. all the input keys are ordered), the results are shown in the following plot:
+![](output/plot_balance.png)
+It is evident that the balancing algorithm scales linearly with the number of nodes in the tree, as expected (since it has to iterate on all the nodes).
+It has to be noted that the time is in the order of the milli-second, making our tree, even when balanced, not convenient at all with respect to the `std::map` class.
