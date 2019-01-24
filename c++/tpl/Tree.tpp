@@ -167,37 +167,3 @@ void Tree< T, U >::kernel_balance( Iterator here, const std::vector<Node*> nodes
 }
 
 // ===========================================================================
-
-
-// template < class T, class U >
-// void Tree< T, U >::kernel_balance( Tree& T_new, Iterator startpoint, size_t steps, Iterator endpoint ) {
-
-//   Iterator it = startpoint;
-//   size_t ii = 0;
-//   std::cout << "check kernel: " << it->key() << std::endl;
-//   if ( steps > 0 ) {
-
-//     for ( ; ii < steps && it != endpoint; ++ii, ++it );
-    
-//     if ( it.operator->() )
-//       T_new.insert( it->key(), it->value(), true );
-//     else T_new.insert( startpoint->key(), startpoint->value(), true );
-    
-//     kernel_balance ( T_new, startpoint, steps/2, it );
-//     if ( ++it != endpoint ) kernel_balance ( T_new, it, steps/2, endpoint );
-    
-//   }
-//   else {
-//     while ( it != endpoint && it.operator->() ) {
-
-//       T_new.insert( it->key(), it->value(), true );
-//       ++it;
-
-//     } 
-//   }
-  
-  
-// }
-
-
-// ===========================================================================

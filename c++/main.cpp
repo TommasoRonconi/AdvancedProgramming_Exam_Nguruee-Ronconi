@@ -2,9 +2,11 @@
 #include <memory>
 #include <map>
 #include <chrono>
+#include <fstream>
 
 typedef std::chrono::high_resolution_clock Clock;
 
+/// this function runs some tests to check basic usage of the Tree
 void make_some_tests () {
 
   Tree< int, double > T {};
@@ -48,6 +50,9 @@ void make_some_tests () {
 
 }
 
+/// this function reads from stdin a set of couples (key, value) and allocates a Tree and an std::map
+/// it measures the time spent by the find() algorithm of each of the two.
+/// time spent by Tree::find() is measured before and after having balanced it
 void compare_with_map () {
 
   // allocate an object of class Tree
@@ -65,37 +70,65 @@ void compare_with_map () {
     myM.insert( std::pair< int, double >( key, value ) );
   }
 
+  // read a bunch of keys from a file and store in a int vector
+  std::string file_in = "input/bunch_of_random_keys.dat";
+  std::ifstream fin { file_in.c_str() };
+  std::vector< int > ran_keys;
+  while (fin >> key)
+    ran_keys.push_back( key );
+  
+
   // find some values within the Tree:
   // (measuring performance)
   auto myT_time_start = Clock::now();
-  myT.find( 42, myT.top() );  // not present
+  for ( auto & kk : ran_keys ) myT.find( kk, myT.top() );
   auto myT_time_end = Clock::now();
   double myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
-  // std::cout << "Time spent (Tree): " << myT_time << std::endl;
   std::cout << myT_time << "\t";
 
   // find some values within the Tree:
   // (measuring performance)
   myT.balance();
   myT_time_start = Clock::now();
-  myT.find( 42, myT.top() );  // not present
+  for ( auto & kk : ran_keys ) myT.find( kk, myT.top() );
   myT_time_end = Clock::now();
   myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
-  // std::cout << "Time spent (balanced Tree): " << myT_time << std::endl;
   std::cout << myT_time << "\t";
 
   // find same values within the map:
   // (measuring performance)
   auto myM_time_start = Clock::now();
-  myT.find( 42, myT.top() );  // not present
+  for ( auto & kk : ran_keys ) myM.find( kk );
   auto myM_time_end = Clock::now();
   double myM_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myM_time_end - myM_time_start).count();
-  // std::cout << "Time spent (std::map): " << myM_time << std::endl;
   std::cout << myM_time << std::endl;
 
   myT.clear();
 
-  // return;
+  return;
+  
+}
+
+/// this function measures the time spent by the balance algorithm
+void balance_tree () {
+
+  // allocate an object of class Tree
+  Tree< int, double > myT;
+
+  // insert elements into the two allocated objects
+  // (pairs 'key-value' are read from stdin)
+  int key;
+  double value;
+  while ( std::cin >> key >> value )
+    myT.insert( key, value );
+  
+  auto myT_time_start = Clock::now();
+  myT.balance();
+  auto myT_time_end = Clock::now();
+  double myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
+  std::cout << myT_time << std::endl;
+
+  return;
   
 }
 
@@ -104,6 +137,11 @@ int main() {
   // run some tests:
 #ifdef TEST
   make_some_tests();
+#endif
+
+  // test balance time
+#ifdef TEST_BALANCE
+  balance_tree();
 #endif
 
   // test performance (requires to insert elements from stdin)
