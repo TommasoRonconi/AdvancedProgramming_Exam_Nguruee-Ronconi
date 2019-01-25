@@ -53,7 +53,7 @@ void make_some_tests () {
 /// this function reads from stdin a set of couples (key, value) and allocates a Tree and an std::map
 /// it measures the time spent by the find() algorithm of each of the two.
 /// time spent by Tree::find() is measured before and after having balanced it
-void compare_with_map () {
+int compare_with_map () {
 
   // allocate an object of class Tree
   Tree< int, double > myT;
@@ -80,8 +80,9 @@ void compare_with_map () {
 
   // find some values within the Tree:
   // (measuring performance)
+  double sum_myT_bef = 0;
   auto myT_time_start = Clock::now();
-  for ( auto & kk : ran_keys ) myT.find( kk, myT.top() );
+  for ( auto & kk : ran_keys ) sum_myT_bef += myT.find( kk, myT.top() );
   auto myT_time_end = Clock::now();
   double myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
   std::cout << myT_time << "\t";
@@ -89,23 +90,25 @@ void compare_with_map () {
   // find some values within the Tree:
   // (measuring performance)
   myT.balance();
+  double sum_myT_aft = 0;
   myT_time_start = Clock::now();
-  for ( auto & kk : ran_keys ) myT.find( kk, myT.top() );
+  for ( auto & kk : ran_keys ) sum_myT_aft += myT.find( kk, myT.top() );
   myT_time_end = Clock::now();
   myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
   std::cout << myT_time << "\t";
 
   // find same values within the map:
   // (measuring performance)
+  double sum_myM = 0;
   auto myM_time_start = Clock::now();
-  for ( auto & kk : ran_keys ) myM.find( kk );
+  for ( auto & kk : ran_keys ) sum_myM += myM.find( kk );
   auto myM_time_end = Clock::now();
   double myM_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myM_time_end - myM_time_start).count();
   std::cout << myM_time << std::endl;
 
   myT.clear();
 
-  return;
+  return sum_myT_bef + sum_myT_aft + sum_myM;
   
 }
 
@@ -141,7 +144,8 @@ int main() {
 
   // test balance time
 #ifdef TEST_BALANCE
-  balance_tree();
+  double sum = balance_tree();
+  std::cerr << sum << std::endl;
 #endif
 
   // test performance (requires to insert elements from stdin)
