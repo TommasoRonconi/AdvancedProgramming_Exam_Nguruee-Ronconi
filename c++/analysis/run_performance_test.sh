@@ -1,13 +1,5 @@
 #! /bin/bash
 
-#PBS -q regular
-#PBS -l nodes=1:ppn=20
-#PBS -l walltime=02:00:00
-#PBS -o /home/tronconi/MHPC/AdvancedProgramming_Exam_Nguruee-Ronconi/c++/analysis/perf.out
-#PBS -e /home/tronconi/MHPC/AdvancedProgramming_Exam_Nguruee-Ronconi/c++/analysis/perf.err
-
-cd ${PBS_O_WORKDIR}
-
 workdir=${PWD}/..
 output=${workdir}/output
 tools=${workdir}/analysis
@@ -16,7 +8,6 @@ mkdir -p ${output}
 cd ${workdir}
 make clean
 make OPT+=-DPERFORMANCE
-cd ${tools}
 
 function random_input {
     ${tools}/random.sh -m 100000 -n $(( 2*$1 )) | awk 'BEGIN{tmp=0;} { if (FNR%2 != 0) tmp = $1; else print int(tmp), $1/1000. }'
@@ -50,4 +41,5 @@ function ordered_input {
     done
 } > ${output}/test_ordered.dat
 
+cd ${tools}
     
