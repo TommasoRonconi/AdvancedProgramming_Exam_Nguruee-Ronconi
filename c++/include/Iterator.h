@@ -51,10 +51,10 @@ public:
   Iterator( Node * n ) : current{ n } {}
 
   /// De-reference operator overload, it returns a reference to the de-referenced object of
-  /// class Node contained in the Iterator
+  /// type Node contained in the Iterator
   Node& operator*() { return *current; }
 
-  /// Member-access operator overload, it returns the raw pointer to the object of class Node
+  /// Member-access operator overload, it returns the raw pointer to the object of type Node
   /// contained in the Iterator
   Node* operator->() const { return current;  }
   
@@ -141,11 +141,11 @@ template < class T, class U >
   using parent::Iterator;
 
   /// De-reference operator overload (constant version), it returns a reference
-  /// to the de-referenced object of class Node contained in the Iterator
+  /// to the de-referenced object of type Node contained in the Iterator
   const Node* operator->() const { return parent::operator->();  }
   
   /// Member-access operator overload (constant version), it returns the
-  /// raw pointer to the object of class Node contained in the Iterator
+  /// raw pointer to the object of type Node contained in the Iterator
   const Node& operator*() const { return parent::operator*(); }
   
   using parent::operator==;

@@ -60,43 +60,10 @@ struct Node {
    *
    *  @param par parent Node to which the Node is attached (default = nullptr)
    */
-  /// constructor that takes
   Node ( T key, U value, Node * par = nullptr )
     : content{ std::pair<T,U>( key, value ) }, parent{ par } {}
 
-  // ==================== copy/move ===================
-  // /// copy-constructor
-  // Node( const Node & n ) : content{ n.content } {}
-
-  // /// copy-assignment overload ( just copies the content of node into a new Node with left, right, parent all pointing to nullptr )
-   // Node& operator= ( const Node& n ) {
-   //   std::cout<< "copying";
-   //   auto tmp = n;
-   //   (*this) = std::move(tmp);
-   //   std::cout << " )\n";
-   //   return *this;
-    //return Node{ n.key(), n.value() };
-    
-   // }
-
-  /// move-constructor
-  // Node( Node && n ) noexcept
-  //   : content{std::move(n.content)},
-  //     parent{std::move(n.parent)},
-  //     left{std::move(n.left)},
-  //     right{std::move(n.right)} {}
-
-  // /// move assignment
-  // Node& operator=(Node&& n) noexcept  {
-
-  //   content = std::move(n.content);
-  //   parent = std::move(n.parent);
-  //   left = std::move(n.left);
-  //   right = std::move(n.right);
-    
-  //   return *this;
-    
-  // }
+  
   // ==================================================
   
 

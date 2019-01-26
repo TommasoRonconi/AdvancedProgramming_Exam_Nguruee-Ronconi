@@ -142,11 +142,12 @@ public:
     
   }
 
-  // move semantic is fine as well
+  /// move-constructor
   Tree ( Tree&& T_other ) : root{ std::move( T_other.root ) },
 			    tail{ std::move( T_other.tail ) },
 			    head{ std::move( T_other.head ) } {}
-  
+
+  /// move-assignment operator
   Tree& operator= ( Tree&& T_other ) {
 
     root = std::move( T_other.root );
