@@ -60,6 +60,9 @@ $(exe_name): $(OBJ)
 
 # make the object
 
+main.e: main.cpp $(INC) $(TPL) Makefile
+	$(CC) $(CFLAGS) -E $< -o $@
+
 main.o: main.cpp $(INC) $(TPL) Makefile
 	$(CC) $(CFLAGS) -c $< -o $@
 

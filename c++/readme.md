@@ -125,11 +125,19 @@ This class is derived from `Iterator`, it simply defines the `const` counterpart
 
 ## Performance measurements
 
+We measure the time spent by the `find()` function of our Tree before and after having balanced it, both in the worst case scenario of a Tree filled with a set of keys ordered and in the case the order of the keys inserted is random.
+The same procedure is also applied to an object of type `std::map` for comparison.
+We test in a range of sizes spanning from 500 couples to 30000 couples, in the following plots we show with differently coloured lines represent the average of the measured time from 10 different runs, while the shaded region around each line delimits the area between the maximum and minimum time measured among all the runs.
+
 | ![](output/plot_ordered.png)         | ![](output/plot_random.png)         |
 | ------------------------------------ | ----------------------------------- |
 | [full-size](output/plot_ordered.png) | [full-size](output/plot_random.png) |
 
+The unbalanced Tree (blue curves) is always way less performant that the other two cases, in the *ordered input* run the time it takes is always more than one order of magnitude higher than the other 2 cases.
+Our balanced tree on the other hand (orange curve), performs better than the `std::map` by at least a factor of 2-3 in both cases.
+By comparing the performance of our balanced tree with the dashed black line it seems that it scales better than O(log N), at least in the ordered input case.
+
 We also measured the time needed for balancing the tree in the worst case scenario (i.e. all the input keys are ordered), the results are shown in the following plot:
 ![](output/plot_balance.png)
 It is evident that the balancing algorithm scales linearly with the number of nodes in the tree, as expected (since it has to iterate on all the nodes).
-It has to be noted that the time is in the order of the milli-second, making our tree, even when balanced, not convenient at all with respect to the `std::map` class.
+It has to be noted that the measured time is in the order of the milli-second, making our tree, even when balanced, not convenient with respect to the `std::map` class which, in fact, even in the best run, is out-performed by our `find()` function by at most an order of magnitudes in nanoseconds.
