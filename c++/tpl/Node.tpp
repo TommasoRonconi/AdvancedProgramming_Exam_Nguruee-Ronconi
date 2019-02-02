@@ -1,28 +1,19 @@
-
-
-// ===========================================================================
-
-
-// template< class T, class U >
-// void Node< T, U >::insert ( const T key, const U value, const bool substitute ) {
-      
-//   if ( substitute && key == content.first ) content.second = value;
-      
-//   if( key < content.first ) {
-//     if( left ) 
-//       left->insert( key, value, substitute );
-//     else
-//       left.reset( new Node { key, value, this } );
-//   }
-
-//   if ( key > content.first ) {
-//     if ( right ) 
-//       right->insert( key, value, substitute );
-//     else 
-//       right.reset( new Node{ key, value, parent } );	
-//   }
-      
-// }
+/**
+ *  @file tpl/Node.tpp
+ *
+ *  @brief Definition of templated functions of struct Node
+ *
+ *  This file defines the interface of the templated functions of the struct Node
+ *  It is included at the end of the header file include/Node.h.
+ *  Implementing the definition of the structure member functions in a separate
+ *  file allows us to maintain an ordered structure, while using this strategy
+ *  instead of declaring each possible setting of the templated types keeps the
+ *  generality of the class.
+ *
+ *  @author Herbert Nguruwe, Tommaso Ronconi
+ *
+ *  @author hknguruwe@gmail.com, tronconi@sissa.it
+ */
 
 
 // ===========================================================================

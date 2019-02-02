@@ -44,9 +44,6 @@ class Tree {
   /// The root node of the BST
   std::unique_ptr<Node> root = nullptr;
 
-  /// The head of the BST
-  Node * head = nullptr;
-
   /// The tail of the BST
   Node * tail = nullptr;
 
@@ -60,16 +57,16 @@ class Tree {
 
   /**
    *  @brief Templeted private function for in-place balance a section of the Tree. 
-   *         The balanced section is saved in the right level of another Tree passed 
-   *         by reference to the function.
-   *         The implemented algorithm recursively splits the section in 2 parts, inserts the
-   *         mid-point into T_new and calls itself again once for the first half and once
-   *         for the second half of the remaining Nodes between startpoint and endpoint.
-   *         If the value of steps is less than 1 it inserts the leftovers and exits.
+   *         It receives a vector of raw pointers to Node and recursiverly calls itself
+   *         setting each branch of the Tree with a top-down strategy.
+   *         The implemented algorithm recursively splits the vector in 2 parts, inserts the
+   *         mid-point into the current position and calls itself again once for the first half
+   *         and once for the second half of the remaining Nodes.
+   *         When the vector is empty it sets left and right to nullptr and returns.
    *
-   *  @param [in] startpoint Iterator to point of Tree from which to start balancing
+   *  @param here iterator to current position
    *
-   *  @param [in] endpoint Iterator to point of Tree where to stop balancing
+   *  @param nodes vector of raw pointers to Nodes
    *
    *  @return void
    */
@@ -122,21 +119,19 @@ public:
 
   /// move-constructor
   Tree ( Tree&& T_other ) : root{ std::move( T_other.root ) },
-			    tail{ std::move( T_other.tail ) },
-			    head{ std::move( T_other.head ) } {}
+			    tail{ std::move( T_other.tail ) } {}
 
   /// move-assignment operator
   Tree& operator= ( Tree&& T_other ) {
 
     root = std::move( T_other.root );
-    head = std::move( T_other.head );
     tail = std::move( T_other.tail );
 
     return *this;
 
   }
 
-  // default denstructor
+  // default destructor
   ~Tree() noexcept = default;
 
   ///@}
@@ -183,15 +178,13 @@ public:
    *  @param substitute <b>true</b>: substitute the value in Node if key is present<br/>
    *                    <b>false</b>: do not substitute and exit function
    *
-   *  @return void
-   */
-  // void insert ( const T key, const U value, const bool substitute = false );
-  
+   *  @return Iterator to inserted Node
+   */  
   Iterator insert ( const T key, const U value, const bool substitute = false );
 
   /**
    *  @brief Function to remove all Nodes from Tree. 
-   *         Calls function Node<T, U>::clear() of <b>root</b> Node than resets <b>root</b>.
+   *         Resets <b>root</b> unique pointer, triggering stack unwinding.
    *
    *  @return void
    */
@@ -204,25 +197,23 @@ public:
   /**
    *  @brief Function to balance the Tree.
    *         <ol>
-   *         <li> Counts the number of Nodes composing the Tree;</li>
-   *         <li> Allocate new object of class Tree;</li>
+   *         <li> Fills an ordered vector with raw pointers to the Nodes composing the Tree;</li>
+   *         <li> Resets root Node with midpoint of said vector;</li>
    *         <li> Call to private function Tree::kernel_balance() with arguments:
    *                   <ul>
-   *                   <li><EM>T_new</EM>: newly allocated Tree</li>
-   *                   <li><EM>begin()</EM>: Iterator to tail of the Tree</li>
-   *                   <li><EM>steps</EM>: half of the size measured in Step 1</li>
-   *                   <li><EM>end()</EM>: Iterator to end of the Tree</li>
+   *                   <li><EM>Iterator{ root.get() }</EM>: iterator to root</li>
+   *                   <li><EM>nodes</EM>: ordered vector of raw pointers to Node</li>
    *                   </ul></li>
-   *         <li> call function clear() from root of current Tree;</li>
-   *         <li> move T_new to <b>*this</b>;</li>
    *         </ol>
+   *         If nodes vector is empty resets root to nullptr.
    *
    *  @return void
    */
   void balance ();
 
   /**
-   *  @brief Function to find an element with given key, starting from Tree root.
+   *  @brief Function to find an element with given key.
+   *         It calls the recursive function find() of the root Node
    *
    *  @param key constant key value to be searched
    *
@@ -233,7 +224,8 @@ public:
   Iterator find ( const T key ) { return Iterator { root->find( key ) }; }
 
   /**
-   *  @brief Function to find an element with given key, starting from Tree root.
+   *  @brief Function to find an element with given key.
+   *         It calls the recursive function find() of the root Node
    *
    *  @param key constant key value to be searched
    *
@@ -249,7 +241,7 @@ public:
    *  @param key the key of the Node
    *
    *  @return it returns a reference to the value contained in the Node.
-   *  it the Node does not exist it creates one and inserts the default value
+   *  If the Node does not exist it creates one and inserts the default value
    *  of the type U.
    */
   U & operator[]( const T& key ) {
@@ -259,7 +251,6 @@ public:
     if ( n == end() ) {
       
       n = insert( key, U{}, false );
-      // n = find( key );
       
     }
     
@@ -267,6 +258,9 @@ public:
     
   }
 
+  /** 
+   *  @brief Exception handler for key not found
+   */
   struct key_not_found {
     
     std::string message;
@@ -277,10 +271,10 @@ public:
   /**
    *  @brief Array subscript operator overload, const version
    *
-   *  @param
+   *  @param key the key of the referred node
    *
-   *  @return
-   *
+   *  @return returns a reference to the value contained in the Node.
+   *  If the Node does not exist it throws an exception key_not_found.
    */
   const U & operator[]( const T key ) const {
     

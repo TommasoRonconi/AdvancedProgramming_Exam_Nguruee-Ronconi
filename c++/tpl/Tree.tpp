@@ -70,39 +70,17 @@ Tree< T, U >::Tree ( const Tree & T_other ) {
 // ===========================================================================
 
 
-// template < class T, class U >
-// void Tree< T, U >::insert ( const T key, const U value, const bool substitute ) {
-
-//   if ( root ) {
-//     root->insert( key, value, substitute );
-//     if ( key < tail->key() ) tail = tail->left.get();
-//     if ( key > head->key() ) head = head->right.get();
-//   }
-//   else {
-//     root.reset( new Node{ key, value } );
-//     tail = root.get();
-//     head = root.get();
-//   }
-
-// }
-
-
-// ===========================================================================
-
-
 template < class T, class U >
 typename Tree< T, U >::Iterator Tree< T, U >::insert ( const T key, const U value, const bool substitute ) {
 
   if ( root ) {
     Iterator it { root->insert( key, value, substitute ) };
     if ( key < tail->key() ) tail = tail->left.get();
-    if ( key > head->key() ) head = head->right.get();
     return it;
   }
   else {
     root.reset( new Node{ key, value } );
     tail = root.get();
-    head = root.get();
     return Iterator { root.get() };
   }
 
