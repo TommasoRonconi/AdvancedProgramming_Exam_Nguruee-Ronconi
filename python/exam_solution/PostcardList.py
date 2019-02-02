@@ -1,7 +1,7 @@
 """
 @author Herbert Nguruwe and Tommaso Ronconi
 
-Intresting Notes:
+Intresting notes:
 Initially the  class was implemented using the defaultdict class 
 from collections  package. This caused  problems with the method test
 (test_check_sent_received_when)which is implemented using try-catch 
@@ -172,30 +172,5 @@ class PostcardList:
         return post_cards
 
 
-# p = PostcardList()
-# p.readFile("../exam_postcard_list9.txt")
-# print(p._to)
-# p._postcards
-# p.updateLists("test2.txt")
-# # p.updateLists("../exam_postcard_list8.txt")
-# # print("\n")
-# # print("\n")
-# # print(p._from)
-# # p.getPostcardsBySender("Hook")
-# # print("\n")
-# # print("\n")
-# # p.getPostcardsByReceiver("Daisy")
-# # p.writeFile("test.txt")
-# # p.updateFile("test.txt")
-# # p.updateFile("test.txt")
-# print("\n\n")
-# p.getPostcardsByReceiver("Nguruwe")
-# print('\n')
-# print(p._date)
-# print("\n")
-# print(p._from)
-# print("\n")
-# print(p._to)
-# # p.writeFile("test.txt")
 
 
