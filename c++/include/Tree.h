@@ -32,10 +32,6 @@
  */
 template < class T, class U >
 class Tree {
-
-  /**
-   *  \cond SEC_TREE_PRIVATE
-   */
   
   /// structure 'Node<T,U>' to 'Node'
   using Node = struct Node< T, U >;
@@ -63,33 +59,23 @@ class Tree {
 
 
   /**
-   *  @brief Templeted private function for not-in-place balancing a section of the Tree. 
+   *  @brief Templeted private function for in-place balance a section of the Tree. 
    *         The balanced section is saved in the right level of another Tree passed 
    *         by reference to the function.
    *         The implemented algorithm recursively splits the section in 2 parts, inserts the
    *         mid-point into T_new and calls itself again once for the first half and once
    *         for the second half of the remaining Nodes between startpoint and endpoint.
    *         If the value of steps is less than 1 it inserts the leftovers and exits.
-   *       
-   *
-   *  @param [out] T_new reference to Tree object in which to place the palanced section
    *
    *  @param [in] startpoint Iterator to point of Tree from which to start balancing
-   *
-   *  @param [in] steps number of Nodes separating startpoint and endpoint
    *
    *  @param [in] endpoint Iterator to point of Tree where to stop balancing
    *
    *  @return void
    */
   void kernel_balance ( Iterator< T, U > here, const std::vector<Node*> nodes ); 
-  // void kernel_balance ( Tree& Tnew, Iterator< T, U > startpoint, size_t steps, Iterator< T, U > endpoint ); 
 
   ///@}
-  
-  /**
-   *  \endcond
-   */
   
 public:
 
@@ -107,15 +93,7 @@ public:
   /// operator<< overload
   template < class ot, class ou >
     friend std::ostream& operator<< ( std::ostream&, Tree< ot, ou >& );
-
-  // operator[] overload, constant version
-  // template < class ot, class ou >
-  //   ou& operator[] ( const ot& key ) const;
-
-  // /// operator[] overload, non-constant version
-  // template < class ot, class ou >
-  //   ou& operator[] ( const ot& key );
-
+  
   ///@}
 
   /**
@@ -207,7 +185,9 @@ public:
    *
    *  @return void
    */
-  void insert ( const T key, const U value, const bool substitute = false );
+  // void insert ( const T key, const U value, const bool substitute = false );
+  
+  Iterator insert ( const T key, const U value, const bool substitute = false );
 
   /**
    *  @brief Function to remove all Nodes from Tree. 
@@ -217,9 +197,6 @@ public:
    */
   void clear () {
 
-    if ( root ) 
-      root->clear();
-    
     root.reset();
     
   }
@@ -245,43 +222,77 @@ public:
   void balance ();
 
   /**
-   *  @brief Function to find an element with given key, starting from some point in Tree.
+   *  @brief Function to find an element with given key, starting from Tree root.
    *
    *  @param key constant key value to be searched
    *
-   *  @param it Iterator to position in the Tree from where to start searching
-   *
-   *  @return Iterator to position in Tree where key is found
+   *  @return Iterator to position in Tree where key is found, if key is not found
+   *  returns Iterator to end of Tree (i.e. nullptr)
    *
    */
-  Iterator find ( const T key, Iterator it );
+  Iterator find ( const T key ) { return Iterator { root->find( key ) }; }
+
+  /**
+   *  @brief Function to find an element with given key, starting from Tree root.
+   *
+   *  @param key constant key value to be searched
+   *
+   *  @return ConstIterator to position in Tree where key is found, if key is not found
+   *  returns ConstIterator to end of Tree (i.e. nullptr)
+   *
+   */
+  ConstIterator find ( const T key ) const { return ConstIterator { root->find( key ) }; }
  
   /**
-   *  @brief
+   *  @brief Array subscript operator overload
    *
-   *  @param
+   *  @param key the key of the Node
    *
-   *  @return
-   *
+   *  @return it returns a reference to the value contained in the Node.
+   *  it the Node does not exist it creates one and inserts the default value
+   *  of the type U.
    */
-  U& operator[]( const T key ) {
+  U & operator[]( const T& key ) {
 
-    Iterator n = find(key, top());
-    if (n == end())
-      insert(key,U{}, false);
+    Iterator n = find( key );
+    
+    if ( n == end() ) {
+      
+      n = insert( key, U{}, false );
+      // n = find( key );
+      
+    }
+    
     return n->value();
+    
   }
 
+  struct key_not_found {
+    
+    std::string message;
+    key_not_found( const std::string &s ) : message{s} {}
+    
+  };
+
   /**
-   *  @brief
+   *  @brief Array subscript operator overload, const version
    *
    *  @param
    *
    *  @return
    *
    */
-  const U& operator[]( const T key ) const {
-    return this->operator[]( key );
+  const U & operator[]( const T key ) const {
+    
+    ConstIterator n = find( key );
+    
+    if ( n == cend() )
+      throw key_not_found{ "\nI'm sorry dave, I'm afraid I can't do that\n(key " +
+	  std::to_string(key) +
+	  " is not present.)"};
+    
+    return n->value();
+    
   }
 
   ///@}

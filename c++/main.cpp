@@ -3,15 +3,14 @@
 #include <map>
 #include <chrono>
 #include <fstream>
-#include <thread>
+//#include <thread>
 
+/// used for performance measures
 typedef std::chrono::high_resolution_clock Clock;
 
-/// this function runs some tests to check basic usage of the Tree
-void make_some_tests () {
+/// this function inserts a set of key-values inside an empty Tree
+void fill_me ( Tree< int, double > &T ) {
 
-  Tree< int, double > T {};
-  
   bool sub = true;
   T.insert( 2, 7.3, sub );
   T.insert( 3, 6.2, sub );
@@ -29,6 +28,16 @@ void make_some_tests () {
   T.insert( 14, 9.5, sub );
   T.insert( 15, 1.1, sub );
 
+  return;
+  
+}
+
+/// this function runs some tests to check basic usage of the Tree
+void make_some_tests () {
+
+  Tree< int, double > T {};
+  fill_me( T );
+  
   std::cout << "\n!! --- Ordered tree before balance --- !!\n" << std::endl;
   std::cout << T << std::endl;
 
@@ -38,10 +47,23 @@ void make_some_tests () {
   
   Tree< int, double >::Iterator it = T.top();
   std::cout << "\n!! ---- Check if they correspond ---- !!\n" << std::endl;
-  std::cout << "should be 5: " << it->left->right->left->key() << std::endl;
-  std::cout << "should be 9: " << it->right->left->left->key() << std::endl;
-  std::cout << "should be 7.3: " << T.find( 2, it )->value() << std::endl;
-  std::cout << "should be 9.5: " << T.find( 5, it )->value() << std::endl;
+  std::cout << "Checking position in Tree:\n\t should be 5:\t" << it->left->right->left->key() << std::endl;
+  std::cout << "Checking T.find(2):\n\t should be 7.3:\t" << T.find( 2 )->value() << std::endl;
+  std::cout << "Checking T[2]:\n\t should be 7.3:\t" << T[2] << std::endl;
+  T[2] = 1.1;
+  std::cout << "Checking assignment T[2]=1.1:\n\t should be 1.1:\t" << T[2] << std::endl;
+  std::cout << "Checking T[16]:\n\t should be default value:\t" << T[16] << std::endl;
+  std::cout << "Checking assignment T[17] (with const Tree):\n\t should not be there and throw exception.\t";
+  const auto T2 = T;
+  try{
+    std::cout << T2[17] << std::endl;
+  } catch (const Tree<int,double>::key_not_found& s) {
+    std::cerr << s.message << std::endl;
+  } catch (...) {
+    std::cerr << "Unknown exception. Aborting.\n";
+    return;
+  }
+  
 
   T.clear();
   if ( ! T.top().operator->() )
@@ -81,7 +103,7 @@ void compare_with_map () {
   // find some values within the Tree:
   // (measuring performance)
   auto myT_time_start = Clock::now();
-  for ( auto kk: ran_keys ) myT.find( kk, myT.top() );
+  for ( auto kk: ran_keys ) myT.find( kk );
   auto myT_time_end = Clock::now();
   double myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
   std::cout << myT_time << "\t";
@@ -90,7 +112,7 @@ void compare_with_map () {
   // (measuring performance)
   myT.balance();
   myT_time_start = Clock::now();
-  for ( auto kk: ran_keys ) myT.find( kk, myT.top() );
+  for ( auto kk: ran_keys ) myT.find( kk );
   myT_time_end = Clock::now();
   myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
   std::cout << myT_time << "\t";
@@ -132,8 +154,16 @@ void balance_tree () {
   
 }
 
-int main() {  
+int main() {
 
+  // fill balance and print
+#ifdef DEFAULT
+  Tree< int, double > T {};
+  fill_me( T );
+  T.balance();
+  std::cout << T << std::endl;
+#endif
+  
   // run some tests:
 #ifdef TEST
   make_some_tests();

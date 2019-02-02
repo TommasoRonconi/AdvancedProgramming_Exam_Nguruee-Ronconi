@@ -78,11 +78,15 @@ struct Node {
   ///@{
 
   /// returns the key of the Node
-  T key() const { return content.first; }
+  const T& key() const { return content.first; }
 
   /// returns the value of the Node
-  U value() const { return content.second; }
+  const U& value() const { return content.second; }
 
+  /// returns the value of the Node
+  U& value() { return content.second; }
+
+  Node * find ( const T key );
 
   /**
    *  @brief Recursive function to insert a new Node lower in hierarchy with respect
@@ -99,7 +103,9 @@ struct Node {
    *
    *  @return void
    */
-  void insert ( const T key, const U value, const bool substitute = false );
+  // void insert ( const T key, const U value, const bool substitute = false );
+
+  Node * insert ( const T key, const U value, const bool substitute = false );
 
   /**
    *  @brief Recursive function to find the leftmost Node in hierarchy from current
@@ -124,15 +130,15 @@ struct Node {
    */
   void clear () {
 
-    if ( left ) {
-      left->clear();
-      left.reset();
-    }
+    // if ( left ) {
+    //   left->clear();
+    //   left.reset();
+    // }
 
-    if ( right ) {
-      right->clear();
-      right.reset();
-    }
+    // if ( right ) {
+    //   right->clear();
+    //   right.reset();
+    // }
     
   }
 

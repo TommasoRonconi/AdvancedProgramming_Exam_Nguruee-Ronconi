@@ -1,12 +1,19 @@
 #################################################################
 # Pre-processor options (uncomment for adding)
 
+# default action: fill tree, balance it, print on stdout
+OPT = -DDEFAULT
+
 # if uncommented runs basic tests
-# OPT += -DTEST
+# OPT = -DTEST
 
 # if uncommented compares performance with std::map
 # ( note that couples key-value are taken from stdin )
-# OPT += -DPERFORMANCE
+# OPT = -DPERFORMANCE
+
+# if uncommented measures performance of balance() function
+# ( note that couples key-value are taken from stdin )
+# OPT = -DTEST_BALANCE
 
 #################################################################
 # Flags and variables
@@ -24,15 +31,15 @@ exe_name = tree.x
 # flags for debugging and optimization
 # (these are the flags I might want to change)
 
-FLAGS = -std=c++14 -Wall -Wextra -g -O3
+FLAGS = -g -fsanitize=address
 
 # flags for the compiler
 
-CFLAGS = -I $(dirI) -I $(dirT) $(FLAGS) $(OPT)
+CFLAGS = -I $(dirI) -I $(dirT) $(FLAGS) $(OPT) -std=c++14 -Wall -Wextra -O3 
 
 # flags for the linker
 
-LDFLAGS =
+LDFLAGS = $(FLAGS) 
 
 # includes
 
@@ -56,7 +63,7 @@ all: $(exe_name)
 # make the executable
 
 $(exe_name): $(OBJ)
-	$(CC) $^ -o $@ 
+	$(CC) $^ -o $@ $(LDFLAGS)
 
 # make the object
 

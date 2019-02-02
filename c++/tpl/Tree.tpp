@@ -26,13 +26,12 @@ std::ostream& operator<< (std::ostream& os, Tree< ot, ou >& t) {
   Iterator< ot, ou > it = t.begin();
   
   if ( it.operator->() ) {
-    Iterator< ot, ou > stop { t.head };
+    Iterator< ot, ou > stop = t.end();
     while ( it != stop ) {
       os << it->key() << ":\t" << it->value() << "\n";
       ++it;
     }
 
-    os << it->key() << ":\t" << it->value();
   }
   else os << "Empty Tree!";
 
@@ -71,38 +70,40 @@ Tree< T, U >::Tree ( const Tree & T_other ) {
 // ===========================================================================
 
 
-template < class T, class U >
-Iterator< T, U > Tree< T, U >::find ( const T key, Iterator it ) {
+// template < class T, class U >
+// void Tree< T, U >::insert ( const T key, const U value, const bool substitute ) {
 
-  if ( key == it->key() )
-    return it;
+//   if ( root ) {
+//     root->insert( key, value, substitute );
+//     if ( key < tail->key() ) tail = tail->left.get();
+//     if ( key > head->key() ) head = head->right.get();
+//   }
+//   else {
+//     root.reset( new Node{ key, value } );
+//     tail = root.get();
+//     head = root.get();
+//   }
 
-  if ( key < it->key() && ( it->left ) )
-    return find( key, Iterator( it->left.get() ) );
-
-  if ( key > it->key() && (it->right))
-    return find( key, Iterator( it->right.get() ) );
-
-  return end();
-    
-}
+// }
 
 
 // ===========================================================================
 
 
 template < class T, class U >
-void Tree< T, U >::insert ( const T key, const U value, const bool substitute ) {
+typename Tree< T, U >::Iterator Tree< T, U >::insert ( const T key, const U value, const bool substitute ) {
 
   if ( root ) {
-    root->insert( key, value, substitute );
+    Iterator it { root->insert( key, value, substitute ) };
     if ( key < tail->key() ) tail = tail->left.get();
     if ( key > head->key() ) head = head->right.get();
+    return it;
   }
   else {
     root.reset( new Node{ key, value } );
     tail = root.get();
     head = root.get();
+    return Iterator { root.get() };
   }
 
 }
@@ -144,6 +145,7 @@ void Tree< T, U >::kernel_balance( Iterator here, const std::vector<Node*> nodes
   if ( left_half.size() > 0 ) {
     here->left.release();
     here->left.reset( left_half[ 0.5 * left_half.size() ] );
+    here->left->parent = here.operator->();
     kernel_balance( Iterator{ here->left.get() }, left_half );
   }
   else {
@@ -155,6 +157,7 @@ void Tree< T, U >::kernel_balance( Iterator here, const std::vector<Node*> nodes
   if ( right_half.size() > 0 ) {
     here->right.release();
     here->right.reset( right_half[ 0.5 * right_half.size() ] );
+    here->right->parent = here->parent;
     kernel_balance( Iterator{ here->right.get() }, right_half );
   }
   else {
