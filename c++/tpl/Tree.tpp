@@ -96,17 +96,24 @@ void Tree< T, U >::balance() {
   std::vector<Node*> nodes;
   Iterator it = begin();
   for ( ; it != end(); ++it )
-    nodes.push_back( it.operator->() );
+    nodes.push_back( new Node { it->key(), it->value() } );
+  clear();
+  //this->root.reset();
 
   if ( nodes.size() > 0 ) {
-    root.release();
+    //root.release();
     root.reset( nodes[ 0.5 * nodes.size() ] );
+    // std::cout << root->key() << std::endl;
     kernel_balance( Iterator { root.get() }, nodes );
   }
-  else {
-    root.release();
-    root.reset( nullptr );
-  }
+  // else {
+  //   root.release();
+  //   root.reset( nullptr );
+  // }
+  
+  // for ( typename std::vector< Node* >::iterator it = nodes.begin(); it != nodes.end(); ++it )
+  //   delete ( *it );
+  tail = root->leftmost();
  
 }
 
@@ -114,34 +121,38 @@ void Tree< T, U >::balance() {
 
 
 template < class T, class U >
-void Tree< T, U >::kernel_balance( Iterator here, const std::vector<Node*> nodes ) {
+void Tree< T, U >::kernel_balance( Iterator here, const std::vector<Node*>& nodes ) {
 
   auto begin = nodes.begin();
   auto last = nodes.begin() + nodes.size();
-
+  
+  // std::cout << here->key() << std::endl;
+  
   std::vector< Node* > left_half { begin, begin + 0.5 * nodes.size() };
   if ( left_half.size() > 0 ) {
-    here->left.release();
+    // here->left.release();
     here->left.reset( left_half[ 0.5 * left_half.size() ] );
+    // std::cout << here->left->key() << std::endl;
     here->left->parent = here.operator->();
     kernel_balance( Iterator{ here->left.get() }, left_half );
   }
-  else {
-    here->left.release();
-    here->left.reset( nullptr );
-  }
+  // else {
+  //   // here->left.release();
+  //   here->left.reset( nullptr );
+  // }
 
   std::vector< Node* > right_half { last - 0.5 * nodes.size(), last };
   if ( right_half.size() > 0 ) {
-    here->right.release();
+    // here->right.release();
     here->right.reset( right_half[ 0.5 * right_half.size() ] );
+    // std::cout << here->right->key() << std::endl;
     here->right->parent = here->parent;
     kernel_balance( Iterator{ here->right.get() }, right_half );
   }
-  else {
-    here->right.release();
-    here->right.reset( nullptr );
-  }
+  // else {
+  //   // here->right.release();
+  //   here->right.reset( nullptr );
+  // }
 
   return;
   

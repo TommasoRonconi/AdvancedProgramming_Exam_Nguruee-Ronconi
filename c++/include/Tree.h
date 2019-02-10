@@ -70,7 +70,7 @@ class Tree {
    *
    *  @return void
    */
-  void kernel_balance ( Iterator< T, U > here, const std::vector<Node*> nodes ); 
+  void kernel_balance ( Iterator< T, U > here, const std::vector<Node*>& nodes ); 
 
   ///@}
   
@@ -190,7 +190,7 @@ public:
    */
   void clear () {
 
-    root->clear();
+    //root->clear();
     root.reset();
     
   }
