@@ -190,6 +190,7 @@ public:
    */
   void clear () {
 
+    root->clear();
     root.reset();
     
   }

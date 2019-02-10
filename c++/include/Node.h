@@ -103,8 +103,6 @@ struct Node {
    *
    *  @return void
    */
-  // void insert ( const T key, const U value, const bool substitute = false );
-
   Node * insert ( const T key, const U value, const bool substitute = false );
 
   /**
@@ -130,15 +128,15 @@ struct Node {
    */
   void clear () {
 
-    // if ( left ) {
-    //   left->clear();
-    //   left.reset();
-    // }
+    if ( left ) {
+      left->clear();
+    }
+    left.reset();
 
-    // if ( right ) {
-    //   right->clear();
-    //   right.reset();
-    // }
+    if ( right ) {
+      right->clear();
+    }
+    right.reset();
     
   }
 

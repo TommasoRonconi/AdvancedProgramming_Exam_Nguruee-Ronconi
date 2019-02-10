@@ -35,7 +35,7 @@ FLAGS = -g -fsanitize=address
 
 # flags for the compiler
 
-CFLAGS = -I $(dirI) -I $(dirT) $(FLAGS) $(OPT) -std=c++14 -Wall -Wextra -O3 
+CFLAGS = -I $(dirI) -I $(dirT) $(FLAGS) $(OPT) -std=c++14 -Wall -Wextra -O3
 
 # flags for the linker
 

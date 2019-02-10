@@ -3,7 +3,7 @@
 #include <map>
 #include <chrono>
 #include <fstream>
-//#include <thread>
+// #include <thread>
 
 /// used for performance measures
 typedef std::chrono::high_resolution_clock Clock;
@@ -149,6 +149,8 @@ void balance_tree () {
   auto myT_time_end = Clock::now();
   double myT_time = std::chrono::duration_cast<std::chrono::nanoseconds>(myT_time_end - myT_time_start).count();
   std::cout << myT_time << std::endl;
+
+  myT.clear();
 
   return;
   
