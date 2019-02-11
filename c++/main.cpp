@@ -151,7 +151,7 @@ void balance_tree () {
   std::cout << myT_time << std::endl;
 
   myT.clear();
-
+  
   return;
   
 }
@@ -163,16 +163,7 @@ int main() {
   Tree< int, double > T {};
   fill_me( T );
   T.balance();
-  std::cout << T << std::endl;
-  
-  // std::vector<Node<int, double>*> nodes;
-  // Tree< int, double >::Iterator it = T.begin();
-  // for ( ; it != T.end(); ++it )
-  //   nodes.push_back( new Node<int, double> { it->key(), it->value() } );
-  
-  // for ( std::vector< Node<int, double>* >::iterator it = nodes.begin(); it != nodes.end(); ++it )
-  //   delete ( *it );
-  
+  std::cout << T << std::endl;  
   T.clear();
 #endif
   

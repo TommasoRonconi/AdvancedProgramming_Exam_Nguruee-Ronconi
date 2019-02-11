@@ -17,6 +17,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <cmath>
 #include <Node.h>
 #include <Iterator.h>
 
@@ -184,13 +185,12 @@ public:
 
   /**
    *  @brief Function to remove all Nodes from Tree. 
-   *         Resets <b>root</b> unique pointer, triggering stack unwinding.
+   *         Resets <b>root</b> unique pointer.
    *
    *  @return void
    */
   void clear () {
-
-    //root->clear();
+    
     root.reset();
     
   }

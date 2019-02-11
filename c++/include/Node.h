@@ -128,14 +128,10 @@ struct Node {
    */
   void clear () {
 
-    if ( left ) {
-      left->clear();
-    }
+    // reset everything on the left
     left.reset();
 
-    if ( right ) {
-      right->clear();
-    }
+    // reset everything on the right
     right.reset();
     
   }

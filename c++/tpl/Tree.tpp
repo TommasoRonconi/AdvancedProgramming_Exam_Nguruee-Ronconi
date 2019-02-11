@@ -93,27 +93,25 @@ typename Tree< T, U >::Iterator Tree< T, U >::insert ( const T key, const U valu
 template < class T, class U >
 void Tree< T, U >::balance() {
 
+  // allocate the nodes in vector sorted by key
   std::vector<Node*> nodes;
   Iterator it = begin();
   for ( ; it != end(); ++it )
     nodes.push_back( new Node { it->key(), it->value() } );
-  clear();
-  //this->root.reset();
-
-  if ( nodes.size() > 0 ) {
-    //root.release();
-    root.reset( nodes[ 0.5 * nodes.size() ] );
-    // std::cout << root->key() << std::endl;
-    kernel_balance( Iterator { root.get() }, nodes );
-  }
-  // else {
-  //   root.release();
-  //   root.reset( nullptr );
-  // }
   
-  // for ( typename std::vector< Node* >::iterator it = nodes.begin(); it != nodes.end(); ++it )
-  //   delete ( *it );
-  tail = root->leftmost();
+  // delete un-balanced tree
+  clear();
+
+  // if vector not-empty allocate new root and call recursive
+  // function to populate new tree, when finished update tail
+  if ( nodes.size() > 0 ) {
+    root.reset( nodes[ 0.5 * nodes.size() ] );
+    kernel_balance( Iterator { root.get() }, nodes );
+    tail = nodes[ 0 ];
+  }
+  else {
+    tail = root.get();
+  }  
  
 }
 
@@ -124,35 +122,22 @@ template < class T, class U >
 void Tree< T, U >::kernel_balance( Iterator here, const std::vector<Node*>& nodes ) {
 
   auto begin = nodes.begin();
-  auto last = nodes.begin() + nodes.size();
+  auto mid = nodes.begin() + 0.5 * nodes.size();
+  auto last = nodes.end();
   
-  // std::cout << here->key() << std::endl;
-  
-  std::vector< Node* > left_half { begin, begin + 0.5 * nodes.size() };
+  std::vector< Node* > left_half { begin, mid };
   if ( left_half.size() > 0 ) {
-    // here->left.release();
     here->left.reset( left_half[ 0.5 * left_half.size() ] );
-    // std::cout << here->left->key() << std::endl;
     here->left->parent = here.operator->();
     kernel_balance( Iterator{ here->left.get() }, left_half );
   }
-  // else {
-  //   // here->left.release();
-  //   here->left.reset( nullptr );
-  // }
 
-  std::vector< Node* > right_half { last - 0.5 * nodes.size(), last };
+  std::vector< Node* > right_half { ++mid, last };
   if ( right_half.size() > 0 ) {
-    // here->right.release();
     here->right.reset( right_half[ 0.5 * right_half.size() ] );
-    // std::cout << here->right->key() << std::endl;
     here->right->parent = here->parent;
     kernel_balance( Iterator{ here->right.get() }, right_half );
   }
-  // else {
-  //   // here->right.release();
-  //   here->right.reset( nullptr );
-  // }
 
   return;
   
